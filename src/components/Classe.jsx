@@ -5,6 +5,7 @@ import moment from "moment";
 moment.locale('fr');
 import { Progression } from "./Progression.jsx";
 import { useNavigate } from "react-router-dom";
+import { Competences } from "./Competences.jsx";
 
 
 const Classe = () => {
@@ -52,6 +53,7 @@ const Classe = () => {
 
   return (
     <div className="is-flex h-100 columns is-flex is-vcentered ">
+     <Competences></Competences>
       <Progression></Progression>
       <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
         <div>

@@ -64,3 +64,16 @@ export const fetchProgressionByid = (id) =>
     .get()
     .then((response) => response.data)
     .catch((error) => Promise.reject(error));
+
+export const fetchAllCompetences = () =>
+  axios
+    .create({
+      baseURL: `http://localhost:1337/api/competences?populate=*`,
+/*       headers: {
+        Accept: "application/json",
+        DOLAPIKEY: "7VsbrNpR2wLvcX5XUJ933qYsy33Vx64Q",
+      }, */
+    })
+    .get()
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));

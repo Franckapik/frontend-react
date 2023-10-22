@@ -4,8 +4,8 @@ return to beginning if sessioStorage doesn't exist for next page
 
 how to refresh on each page for progression
 
-metre un pid systematiquement dans lurl pour evaluation par ex 
+ajouter bouton reprendre la session (url enregistré à chaque fois?)
 
-Ajouter evaluation status et les dates dans progression
+Ajouter evaluation status 
 
 reflechir au moyen d'avoir eleve - competence - travail satisfaisant
