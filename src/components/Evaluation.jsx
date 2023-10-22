@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as apiFetch from "../api/fetch.js";
 import * as apiPost from "../api/post.js";
 import moment from "moment";
+moment.locale('fr');
 import { Progression } from "./Progression.jsx";
 
 const Evaluation = () => {
@@ -33,7 +34,6 @@ const Evaluation = () => {
 
     }, pid);
 
-    console.log(result);
     navigate(`/exercice/${eva_id}?pid=${pid}`, { replace: true })
 
   };

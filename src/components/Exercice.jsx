@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import * as apiFetch from "../api/fetch.js";
+import { Progression } from "./Progression.jsx";
 
 const Exercice = () => {
   const [exercices, setExercices] = useState([]);
@@ -11,7 +12,6 @@ const Exercice = () => {
   useEffect(() => {
     const fetchData = async () => {
       const result = await apiFetch.fetchExerciceByEvaId(evaId);
-      console.log(result);
       setExercices(result.data);
     };
     fetchData();
@@ -19,6 +19,7 @@ const Exercice = () => {
 
   return (
     <div className="is-flex h-100 columns is-flex is-vcentered ">
+     <Progression></Progression>
       <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
         <div>
           <p className="title m-3">Exercices: </p>
@@ -26,11 +27,11 @@ const Exercice = () => {
         <div>
           {exercices.length > 0 &&
             exercices.map((exo) => (
-              <div className="card m-2">
+              <div key={"exo" + exo.id} className="card m-2">
                 <li value={exo.id}>
                   Exercice n° {exo.attributes.numero} : {exo.attributes.titre}
                 </li>
-                <li value={exo.id}>
+                <div value={exo.id}>
                   {exo.attributes.contenu}
                   <p> Questions :</p>
                   {exo.attributes.questions.data.map((question, i) => {
@@ -40,7 +41,7 @@ const Exercice = () => {
                   {exo.attributes.reponses.data.map((reponse, i) => {
                     return <li>{reponse.attributes.type} {reponse.attributes.contenu} {reponse.attributes.correct? "Vrai" : "Fausse"}</li>;
                   })}
-                </li>
+                </div>
               </div>
             ))}
         </div>

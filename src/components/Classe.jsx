@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as apiFetch from "../api/fetch.js";
 import * as apiPost from "../api/post.js";
 import moment from "moment";
+moment.locale('fr');
 import { Progression } from "./Progression.jsx";
 import { useNavigate } from "react-router-dom";
 
@@ -35,8 +36,7 @@ const Classe = () => {
       const result = await apiPost.updateProgression({
         reprise: moment()
       }, sessionPid);
-      console.info("reprise de la session numero "+ sessionPid )
-      console.log(result);
+      console.info("Reprise de la session numero "+ sessionPid )
       setProgressionId(sessionPid)
       navigate({search : `?pid=${sessionPid}`})
     };

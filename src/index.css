@@ -1,6 +1,9 @@
 body {
   position: relative;
   min-height: 100vh;
+  background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)),
+  url("/bg_sciences.png");  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 .h-100 {

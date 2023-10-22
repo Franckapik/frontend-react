@@ -55,6 +55,8 @@ const Eleve = () => {
                 className="select is-large m-5"
                 onChange={(e) => setEleveId(e.target.value)}
               >
+                                  <option key={"default select"} selected={true} disabled="disabled" >-- selectionne ton prénom --</option>
+
                 {eleves.map((eleve) => (
                   <option key={"eleve" + eleve.id} value={eleve.id}>{eleve.attributes.Nom}</option>
                 ))}

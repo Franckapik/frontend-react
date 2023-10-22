@@ -20,7 +20,7 @@ export const Progression = () => {
 
 
   return (
-    <>    {console.log(progression)}
+    <>    
     {progression ? <div>
       <p>Creation :{moment(progression.createdAt).format("HH:mm:ss")}
       </p>
@@ -28,7 +28,6 @@ export const Progression = () => {
       <p>Eleve : {progression.eleve.data ? progression.eleve.data.attributes.Nom : "Pas de nom"}  </p>
       <p>Evaluation : {progression.evaluation.data ? progression.evaluation.data.attributes.Nom : "Pas d'evaluation"}</p>
       <p>Reprise : {progression.reprise}</p>
-      <p>Creation : {progression.creation}</p>
     </div> : "Pas de progresssion"}</>
 
 
