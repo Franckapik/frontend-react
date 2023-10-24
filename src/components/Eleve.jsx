@@ -1,68 +1,61 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import * as apiFetch from "../api/fetch.js";
+import React from "react";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useParams, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
-import { Progression } from "./Progression.jsx";
 
 const Eleve = () => {
-  const [eleves, setEleves] = useState([]);
-  const [classe, setClasse] = useState([]);
-  const [eleveId, setEleveId] = useState([]);
   let { classeId } = useParams();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const pid = searchParams.get("pid")
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await apiFetch.fetchByClasseId(classeId);
-      setEleves(result.data[0].attributes.eleve.data);
-      setClasse(result.data[0].attributes.Classe);
-    };
-    fetchData();
 
-  }, [classeId, pid]);
 
-  const setEleveInProgression = async () => {
-      const result = await apiPost.updateProgression({
-        
-          eleve: {
-            id: eleveId
-          }
-        
-      }, pid);
+  const queryClient = useQueryClient()
 
-        navigate(`/evaluation/${classeId}?pid=${pid}`, {replace:true})
+  const { isLoading, error, data: eleves } = useQuery('eleves', () =>
+    fetch(`http://localhost:1337/api/eleves?populate=*&filters[classe]=${classeId}`).then(res =>
+      res.json()
+    )
+  )
 
-    };
-    
-  
+  const { isLoading: isUpdating, isSuccess, mutate } = useMutation(async (e) => {
+    e.preventDefault();
+    return apiPost.updateProgression({
+      eleve: {
+        id: e.target.value
+      }
+    }, pid)
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['progression'])
+    }
+  })
+
 
   return (
     <div className="is-flex h-100 columns is-flex is-vcentered ">
-              <Progression></Progression>
-
       <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
         <div>
           <p className="title m-3">Selectionne ton nom dans la liste : </p>
         </div>
         <div>
-          {eleves.length > 0 && (
-           <>
+          {!isLoading && (
+            <>
               <select
                 name="eleve"
                 id="eleve-select"
                 className="select is-large m-5"
-                onChange={(e) => setEleveId(e.target.value)}
+                onChange={mutate}
+                defaultValue={-1}
               >
-                                  <option key={"default select"} selected={true} disabled="disabled" >-- selectionne ton prénom --</option>
+                <option key={"default select"} value={-1} disabled="disabled" >-- selectionne ton prénom --</option>
 
-                {eleves.map((eleve) => (
+                {eleves.data.map((eleve) => (
                   <option key={"eleve" + eleve.id} value={eleve.id}>{eleve.attributes.Nom}</option>
                 ))}
               </select>
-           <button  onClick={()=> setEleveInProgression()}>Suite</button>
-           </>
+             <a href={`/evaluation/${classeId}?pid=${pid}`}> Suite</a>
+            </>
           )}
         </div>
       </div>

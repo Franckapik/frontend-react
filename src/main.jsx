@@ -8,9 +8,15 @@ import Eleve from "./components/Eleve";
 import Classe from "./components/Classe.jsx";
 import Exercice from "./components/Exercice.jsx";
 import Layout from "./components/Layout.jsx";
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
+import {ReactQueryDevtools} from 'react-query/devtools'
+
+const queryClient = new QueryClient()
+
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
+     <QueryClientProvider client={queryClient}>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout title={"Classe"}><Classe /></Layout>} />
@@ -18,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/exercice/:evaId" element={<Layout title={"Exerices"}><Exercice /></Layout>} />
         <Route path="/eleve/:classeId" element={<Layout title={"Eleve"}><Eleve /></Layout>} />
       </Routes>
-    </BrowserRouter>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </BrowserRouter></QueryClientProvider>
   </React.StrictMode>
 );
