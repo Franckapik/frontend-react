@@ -2,8 +2,11 @@ body {
   position: relative;
   min-height: 100vh;
   background-image: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.2)),
-  url("/bg_sciences.png");  background-repeat: no-repeat;
+    url("/bg_sciences.png");
+  background-repeat: no-repeat;
   background-size: cover;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 
 .h-100 {
@@ -11,10 +14,6 @@ body {
 }
 
 .h-50 {
-height: 50vh;
+  height: 50vh;
 
 }
-
-
-
-

@@ -5,7 +5,7 @@ export default function Layout({ title, toolbar, children }) {
       <div>
         <header>
           <h1>{title}</h1>
-{/*           <Progression ></Progression> */}
+          <Progression ></Progression>
         </header>
         <main>{children}</main>
       </div>
