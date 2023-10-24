@@ -54,6 +54,7 @@ const Classe = () => {
 
   const { mutate: addClasse } = useMutation(async (e) => {
     e.preventDefault();
+    setClasseId(e.target.value)
     return apiPost.updateProgression({
       classe: {
         id: e.target.value
