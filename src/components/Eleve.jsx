@@ -33,7 +33,7 @@ const Eleve = () => {
 
 
   return (
-    <div className="is-flex h-100 columns is-flex is-vcentered ">
+    <div className="">
       <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
         <div>
           <p className="title m-3">Selectionne ton nom dans la liste : </p>

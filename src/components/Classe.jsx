@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 import * as apiPost from "../api/post.js";
-moment.locale('fr');
 
 
 const Classe = () => {
@@ -69,7 +68,7 @@ const Classe = () => {
 
 
   return (
-    <div className="is-flex h-100 columns is-flex is-vcentered ">
+    <div className="">
       <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
         <div>
           <p className="title m-3">Dans quelle classe est-tu ? </p>
