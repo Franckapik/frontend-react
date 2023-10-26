@@ -7,12 +7,12 @@ export const postProgression = (data) =>
     })
     .then((response) => {
       console.info("[POST] [Progression] [/api/progressions]");
-      return response.data
+      return response.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
-      return err
-    })
+      return err;
+    });
 
 export const updateProgression = (data, id) =>
   axios
@@ -21,9 +21,23 @@ export const updateProgression = (data, id) =>
     })
     .then((response) => {
       console.info("[PUT] [Update Progression] [/api/progressions] on id : " + id);
-      return response.data
+      return response.data;
     })
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
-      return err
+      return err;
+    });
+
+export const postCompletion = (data) =>
+  axios
+    .post(`http://localhost:1337/api/completions`, {
+      data: data,
     })
+    .then((response) => {
+      console.info("[POST] [Completion] [/api/completions]");
+      return response.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });

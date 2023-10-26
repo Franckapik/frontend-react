@@ -46,7 +46,7 @@ export const Progression = () => {
           </tbody>
           <tbody>
             <tr>
-              <td  colspan="3" className="is-size-4 has-text-centered has-background-info">Evaluation : {progression.data[0].attributes.evaluation.data ? progression.data[0].attributes.evaluation.data.attributes.Nom : "Pas d'evaluation"} </td>
+              <td  colSpan="3" className="is-size-4 has-text-centered has-background-info">Evaluation : {progression.data[0].attributes.evaluation.data ? progression.data[0].attributes.evaluation.data.attributes.Nom : "Pas d'evaluation"} </td>
 
             </tr>
           </tbody>
