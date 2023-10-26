@@ -1,14 +1,5 @@
 Classe => Eleve => Evaluation => Exercices
 
-Corriger erreur (pas daffiahcage) sur exercices
-
-resoudre affichage image exo
-
-Comment afficher les exercices ?
-- commencer par afficher un exo entier avec le style
-- puis ensuite choisir la manière dont ils sont affichés entres eux. (page de scroll ou bien scroll vertical)
-
-le sessionStorage permet de considerer que la personne est la meme de l'ouverture a la fermeture d'un onglet
 
 return to beginning if sessioStorage doesn't exist for next page
 

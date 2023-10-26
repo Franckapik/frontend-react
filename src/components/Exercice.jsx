@@ -36,18 +36,25 @@ const Exercice = () => {
       }
     }) */
 
-
   return (
     <div className="">
       <div className="column m-auto p-3 has-text-centered">
         <div>
-        <nav className="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="#">Evaluation</a></li>
-    <li><a href="#">Exercice 1 </a></li>
-    <li className="is-active"><a href="#" aria-current="page">Exercice 2</a></li>
-  </ul>
-</nav>
+          <nav className="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+            <ul>
+              <li>
+                <a href="#">Evaluation</a>
+              </li>
+              <li>
+                <a href="#">Exercice 1 </a>
+              </li>
+              <li className="is-active">
+                <a href="#" aria-current="page">
+                  Exercice 2
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
         <div>
           {isSuccess && (

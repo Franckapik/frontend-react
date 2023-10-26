@@ -33,8 +33,7 @@ const Eleve = () => {
 
 
   return (
-    <div className="">
-      <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
+      <div>
         <div>
           <p className="title m-3">Selectionne ton nom dans la liste : </p>
         </div>
@@ -59,7 +58,6 @@ const Eleve = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 

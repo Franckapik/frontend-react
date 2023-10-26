@@ -16,6 +16,9 @@ body {
 .h-50 {
   height: 50vh;
 }
+.h-80 {
+  height: 80vh;
+}
 
 .reponse {
   height: 80px;

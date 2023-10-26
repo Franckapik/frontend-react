@@ -21,13 +21,13 @@ export const Progression = () => {
       {isSuccess ? <><div className="is-flex is-justify-content-space-around has-background-light ">
         <div><span className="icon">
           <i className="fa-solid fa-flag-checkered"></i>
-        </span> {progression.data[0] != null ? moment(progression.data[0].attributes.createdAt).format('LLLL') : "Pas de début"}</div>
+        </span> {progression.data[0] != null && moment(progression.data[0].attributes.createdAt).format('LLLL')}</div>
         <div><span className="icon">
           <i className="fa-solid fa-school"></i>
         </span> Progression n° : {pid}</div>
         <div><span className="icon">
           <i className="fa-solid fa-clock"></i>
-        </span>Reprise : {moment(progression.data[0].attributes.reprise).format('Do MMMM YYYY, h:mm:ss a')}</div>
+        </span>Reprise : {progression.data[0] != null && moment(progression.data[0].attributes.reprise).format('LLLL') }</div>
       </div>
         <table className="table is-striped is-fullwidth">
           <thead>
@@ -46,7 +46,7 @@ export const Progression = () => {
           </tbody>
           <tbody>
             <tr>
-              <td className="has-text-centered">Evaluation : {progression.data[0].attributes.evaluation.data ? progression.data[0].attributes.evaluation.data.attributes.Nom : "Pas d'evaluation"} </td>
+              <td  colspan="3" className="has-text-centered has-background-info">Evaluation : {progression.data[0].attributes.evaluation.data ? progression.data[0].attributes.evaluation.data.attributes.Nom : "Pas d'evaluation"} </td>
 
             </tr>
           </tbody>

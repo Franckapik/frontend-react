@@ -41,24 +41,23 @@ const Evaluation = () => {
   );
 
   return (
-    <div className="">
-      <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
-        <div>
-          <p className="title m-3">Evaluations: </p>
-        </div>
-        <div>
-          {isSuccess ? (
-            <div>
-              {evaluations.data.map((eva) => (
-                <div key={"eva" + eva.id} onClick={() => mutate(eva.id)} className="card">
-                  {eva.attributes.Nom}
-                </div>
-              ))}
-            </div>
-          ) : (
-            "Pas d'evaluation pour cette classe"
-          )}
-        </div>
+    <div>
+      <div>
+        {isSuccess && (
+          <div>
+            {evaluations.data.length > 0 ? (
+              <div>
+                {evaluations.data.map((eva, i) => (
+                  <div key={"eva" + eva.id} onClick={() => mutate(eva.id)} className="box ">
+                   Evaluation n° {i+1} - {eva.attributes.Nom}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              "Aucune évaluation pour cette classe"
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

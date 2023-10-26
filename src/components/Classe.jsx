@@ -68,8 +68,7 @@ const Classe = () => {
 
 
   return (
-    <div className="">
-      <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
+      <div>
         <div>
           <p className="title m-3">Dans quelle classe est-tu ? </p>
         </div>
@@ -82,7 +81,7 @@ const Classe = () => {
               onChange={addClasse}
               defaultValue={-1}
             >
-              <option key={"default select"} value="-1"  disabled="disabled" >-- selectionne ta classe --</option>
+              <option key={"default select"} value="-1"  disabled="disabled" >-- classes de Pierre Perrin --</option>
 
               {classes.data.map((classe) => (
                 <option key={"classe" + classe.id} value={classe.id}>{classe.attributes.Classe}</option>
@@ -95,7 +94,6 @@ const Classe = () => {
 
         </div>
       </div>
-    </div>
   );
 };
 
