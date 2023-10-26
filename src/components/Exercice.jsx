@@ -3,6 +3,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as apiFetch from "../api/fetch.js";
 import { Progression } from "./Progression.jsx";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import ReactMarkdown from "react-markdown";
 
 const Exercice = () => {
   const [listOfExo, setListOfExo] = useState([]);
@@ -35,7 +36,7 @@ const Exercice = () => {
       }
     }) */
 
-    console.log(exercices);
+  console.log(exercices);
 
   return (
     <div className="">
@@ -65,37 +66,42 @@ const Exercice = () => {
             ))} */}
           {isSuccess && (
             <div>
-              <div class="card">
-                <div class="card-content">
-                  <div class="">
+              <div className="card">
+                <div className="card-content">
+                  <div className="">
                     Exercice n° {exercices.data[exo].attributes.numero} : {exercices.data[exo].attributes.titre}
                   </div>
-                  <div class="content">
+                  <div className="content">
                     <div value={exercices.data[exo].id}>
-                      {exercices.data[exo].attributes.contenu}
-                      <p> Questions :</p>
+                      <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
+
                       {exercices.data[exo].attributes.questions.data.map((question, i) => {
                         return (
-                          <li>
-                            {question.attributes.type} {question.attributes.contenu}
-                          </li>
+                          <div key={"question" + i}>
+                            Question {i + 1} - [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
+                            {question.attributes.contenu}
+                          </div>
                         );
                       })}
-                      <p> Reponses :</p>
-                      {exercices.data[exo].attributes.reponses.data.map((reponse, i) => {
-                        return (
-                          <li>
-                            {reponse.attributes.type} {reponse.attributes.contenu}{" "}
-                            {reponse.attributes.correct ? "Vrai" : "Fausse"}
-                          </li>
-                        );
-                      })}
+                      <div className="is-flex is-flex-wrap-wrap">
+                        {exercices.data[exo].attributes.reponses.data.map((reponse, i) => {
+                          return (
+                            <button
+                              key={"reponse" + i}
+                              className="button is-primary is-info is-flex-basis50 reponse  m-3"
+                            >
+                              {/* {reponse.attributes.type} */} {reponse.attributes.contenu}{" "}
+                              {/*  {reponse.attributes.correct ? "Vrai" : "Fausse"} */}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
               {exo < exercices.data.length - 1 ? (
-                <span onClick={() => navigate({ search: `?exo=${Number(exo) + 1}` })}>Suivant</span>
+                <button onClick={() => navigate({ search: `?exo=${Number(exo) + 1}` })}>Suivant</button>
               ) : (
                 "Retour"
               )}
