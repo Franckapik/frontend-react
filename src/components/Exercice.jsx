@@ -36,37 +36,23 @@ const Exercice = () => {
       }
     }) */
 
-  console.log(exercices);
 
   return (
     <div className="">
       <div className="column m-auto p-3 has-text-centered">
         <div>
-          <p className="title m-3">Exercices: </p>
+        <nav className="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+  <ul>
+    <li><a href="#">Evaluation</a></li>
+    <li><a href="#">Exercice 1 </a></li>
+    <li className="is-active"><a href="#" aria-current="page">Exercice 2</a></li>
+  </ul>
+</nav>
         </div>
         <div>
-          {/* {isSuccess &&
-            exercices.data.map((exo) => (
-              <div key={"exo" + exo.id} className="card m-2">
-                <li value={exo.id}>
-                  Exercice n° {exo.attributes.numero} : {exo.attributes.titre}
-                </li>
-                <div value={exo.id}>
-                  {exo.attributes.contenu}
-                  <p> Questions :</p>
-                  {exo.attributes.questions.data.map((question, i) => {
-                    return <li>{question.attributes.type} {question.attributes.contenu}</li>;
-                  })}
-                  <p> Reponses :</p>
-                  {exo.attributes.reponses.data.map((reponse, i) => {
-                    return <li>{reponse.attributes.type} {reponse.attributes.contenu} {reponse.attributes.correct? "Vrai" : "Fausse"}</li>;
-                  })}
-                </div>
-              </div>
-            ))} */}
           {isSuccess && (
             <div>
-              <div className="card">
+              <div className="card bg-light-50">
                 <div className="card-content">
                   <div className="">
                     Exercice n° {exercices.data[exo].attributes.numero} : {exercices.data[exo].attributes.titre}

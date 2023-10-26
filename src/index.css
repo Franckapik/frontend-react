@@ -24,3 +24,7 @@ body {
 .is-flex-basis50 {
   flex-basis: 45%;
 }
+
+.bg-light-50 {
+  background-color: rgba(255, 255, 255, 0.671);
+}
