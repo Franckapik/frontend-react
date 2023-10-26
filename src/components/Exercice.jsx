@@ -5,44 +5,46 @@ import { Progression } from "./Progression.jsx";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 const Exercice = () => {
-
+  const [listOfExo, setListOfExo] = useState([]);
   let { evaId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const pid = searchParams.get("exo")
-  const navigate = useNavigate()
+  const exo = searchParams.get("exo");
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  const queryClient = useQueryClient()
+  const {
+    isLoading,
+    error,
+    data: exercices,
+    isSuccess,
+  } = useQuery("exercices", () =>
+    fetch(`http://localhost:1337/api/exercices?populate=*&filters[evaluation]=${evaId}`).then((res) => res.json())
+  );
 
-  const { isLoading, error, data: exercices, isSuccess } = useQuery('exercices', () =>
-    fetch(`http://localhost:1337/api/exercices?populate=*&filters[evaluation]=${evaId}`).then(res =>
-      res.json()
-    )
-  )
-
-
-/*   const { isLoading: isUpdating,  mutate } = useMutation(async (evaId) => {
-    return apiPost.updateProgression({
-      evaluation: {
-        id: evaId
+  /*   const { isLoading: isUpdating,  mutate } = useMutation(async (evaId) => {
+      return apiPost.updateProgression({
+        evaluation: {
+          id: evaId
+        }
+      }, pid)
+    }, {
+      onSuccess: (evaId) => {
+        queryClient.invalidateQueries(['progression'])
+        navigate(`/exercice/${evaId}?pid=${pid}`, { replace: true })
+  
       }
-    }, pid)
-  }, {
-    onSuccess: (evaId) => {
-      queryClient.invalidateQueries(['progression'])
-      navigate(`/exercice/${evaId}?pid=${pid}`, { replace: true })
+    }) */
 
-    }
-  }) */
-
+    console.log(exercices);
 
   return (
     <div className="">
-      <div className="column is-half m-auto h-50 has-background-primary box p-3 has-text-centered">
+      <div className="column m-auto p-3 has-text-centered">
         <div>
           <p className="title m-3">Exercices: </p>
         </div>
         <div>
-          {isSuccess &&
+          {/* {isSuccess &&
             exercices.data.map((exo) => (
               <div key={"exo" + exo.id} className="card m-2">
                 <li value={exo.id}>
@@ -60,7 +62,45 @@ const Exercice = () => {
                   })}
                 </div>
               </div>
-            ))}
+            ))} */}
+          {isSuccess && (
+            <div>
+              <div class="card">
+                <div class="card-content">
+                  <div class="">
+                    Exercice n° {exercices.data[exo].attributes.numero} : {exercices.data[exo].attributes.titre}
+                  </div>
+                  <div class="content">
+                    <div value={exercices.data[exo].id}>
+                      {exercices.data[exo].attributes.contenu}
+                      <p> Questions :</p>
+                      {exercices.data[exo].attributes.questions.data.map((question, i) => {
+                        return (
+                          <li>
+                            {question.attributes.type} {question.attributes.contenu}
+                          </li>
+                        );
+                      })}
+                      <p> Reponses :</p>
+                      {exercices.data[exo].attributes.reponses.data.map((reponse, i) => {
+                        return (
+                          <li>
+                            {reponse.attributes.type} {reponse.attributes.contenu}{" "}
+                            {reponse.attributes.correct ? "Vrai" : "Fausse"}
+                          </li>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {exo < exercices.data.length - 1 ? (
+                <span onClick={() => navigate({ search: `?exo=${Number(exo) + 1}` })}>Suivant</span>
+              ) : (
+                "Retour"
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

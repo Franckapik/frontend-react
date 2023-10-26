@@ -34,12 +34,14 @@ export const Progression = () => {
             <tr>
               <th>NOM Prénom</th>
               <th>Classe</th>
+              <th>Note</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>{progression.data[0].attributes.eleve.data ? progression.data[0].attributes.eleve.data.attributes.Nom : "Pas de nom"}</td>
               <td>{progression.data[0].attributes.classe.data ? progression.data[0].attributes.classe.data.attributes.Classe : "Pas de classe"}</td>
+              <td>/20</td>
             </tr>
           </tbody>
           <tbody>

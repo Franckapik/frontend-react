@@ -21,7 +21,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <Routes>
         <Route path="/" element={<Layout title={"Classe"}><Classe /></Layout>} />
         <Route path="/evaluation/:classeId" element={<Layout title={"Evaluation"}><Evaluation /></Layout>} />
-        <Route path="/:evaId/exercice/" element={<Layout title={"Exercice"}><Exercice /></Layout>} />
+        <Route path="/:evaId/exercice" element={<Layout title={"Exercice"}><Exercice /></Layout>} />
         <Route path="/eleve/:classeId" element={<Layout title={"Eleve"}><Eleve /></Layout>} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />
