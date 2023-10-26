@@ -18,7 +18,7 @@ export const Progression = () => {
 
   return (
     <>
-      {isSuccess ? <><div className="is-flex is-justify-content-space-around has-background-light ">
+      {isSuccess ? <><div className="is-flex is-justify-content-space-around p-2 footer-absolute ">
         <div><span className="icon">
           <i className="fa-solid fa-flag-checkered"></i>
         </span> {progression.data[0] != null && moment(progression.data[0].attributes.createdAt).format('LLLL')}</div>
@@ -32,9 +32,9 @@ export const Progression = () => {
         <table className="table is-striped is-fullwidth">
           <thead>
             <tr>
-              <th>NOM Prénom</th>
-              <th>Classe</th>
-              <th>Note</th>
+              <th>NOM PRENOM</th>
+              <th>CLASSE</th>
+              <th>NOTE</th>
             </tr>
           </thead>
           <tbody>
@@ -46,7 +46,7 @@ export const Progression = () => {
           </tbody>
           <tbody>
             <tr>
-              <td  colspan="3" className="has-text-centered has-background-info">Evaluation : {progression.data[0].attributes.evaluation.data ? progression.data[0].attributes.evaluation.data.attributes.Nom : "Pas d'evaluation"} </td>
+              <td  colspan="3" className="is-size-4 has-text-centered has-background-info">Evaluation : {progression.data[0].attributes.evaluation.data ? progression.data[0].attributes.evaluation.data.attributes.Nom : "Pas d'evaluation"} </td>
 
             </tr>
           </tbody>

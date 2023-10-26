@@ -37,10 +37,9 @@ const Exercice = () => {
     }) */
 
   return (
-    <div className="">
-      <div className="column m-auto p-3 has-text-centered">
+      <div >
         <div>
-          <nav className="breadcrumb has-arrow-separator" aria-label="breadcrumbs">
+          <nav className="breadcrumb has-arrow-separator m-2" aria-label="breadcrumbs">
             <ul>
               <li>
                 <a href="#">Evaluation</a>
@@ -56,7 +55,7 @@ const Exercice = () => {
             </ul>
           </nav>
         </div>
-        <div>
+        <div className="is-size-4">
           {isSuccess && (
             <div>
               <div className="card bg-light-50">
@@ -70,7 +69,7 @@ const Exercice = () => {
 
                       {exercices.data[exo].attributes.questions.data.map((question, i) => {
                         return (
-                          <div key={"question" + i}>
+                          <div className=" box has-text-weight-semibold" key={"question" + i}>
                             Question {i + 1} - [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
                             {question.attributes.contenu}
                           </div>
@@ -81,7 +80,7 @@ const Exercice = () => {
                           return (
                             <button
                               key={"reponse" + i}
-                              className="button is-primary is-info is-flex-basis50 reponse  m-3"
+                              className="button is-primary is-info is-flex-basis50 reponse is-size-4 m-3"
                             >
                               {/* {reponse.attributes.type} */} {reponse.attributes.contenu}{" "}
                               {/*  {reponse.attributes.correct ? "Vrai" : "Fausse"} */}
@@ -102,7 +101,6 @@ const Exercice = () => {
           )}
         </div>
       </div>
-    </div>
   );
 };
 
