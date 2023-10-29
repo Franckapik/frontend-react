@@ -1,25 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams, useSearchParams } from "react-router-dom";
+import {  useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
 const Eleve = () => {
-  let { classeId } = useParams();
   const [searchParams] = useSearchParams();
   const pid = searchParams.get("pid")
-
-
+  const cid = searchParams.get("cid")
+  const [uid, setEid] = useState()
 
   const queryClient = useQueryClient()
+  const navigate= useNavigate()
 
   const { isLoading, error, data: eleves } = useQuery('eleves', () =>
-    fetch(`http://localhost:1337/api/eleves?populate=*&filters[classe]=${classeId}`).then(res =>
+    fetch(`http://localhost:1337/api/eleves?populate=*&filters[classe]=${cid}`).then(res =>
       res.json()
     )
   )
 
   const { isLoading: isUpdating, isSuccess, mutate } = useMutation(async (e) => {
     e.preventDefault();
+    setEid(e.target.value)
+    navigate({ search: `?pid=${pid}&cid=${cid}&?uid=${e.target.value}` }, {replace: true})
+
     return apiPost.updateProgression({
       eleve: {
         id: e.target.value
@@ -53,7 +56,7 @@ const Eleve = () => {
                   <option key={"eleve" + eleve.id} value={eleve.id}>{eleve.attributes.Nom}</option>
                 ))}
               </select>
-             <a href={`/evaluation/${classeId}?pid=${pid}`}> Suite</a>
+             <a href={`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}`}> Suite</a>
             </>
           )}
         </div>

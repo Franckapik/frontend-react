@@ -1,5 +1,6 @@
 Classe => Eleve => Evaluation => Exercices
 
+cmt preserver les queries lors d'un url
 
 return to beginning if sessioStorage doesn't exist for next page
 

@@ -6,7 +6,7 @@ import * as apiPost from "../api/post.js";
 
 
 const Classe = () => {
-  const [classeId, setClasseId] = useState(1);
+  const [cid, setClasseId] = useState(1);
   const [pid, setProgressionId] = useState(sessionStorage.getItem("sessionPid"));
   const navigate = useNavigate()
   const queryClient = useQueryClient();
@@ -90,7 +90,7 @@ const Classe = () => {
           )}
         </div>
         <div>
-          <a href={`/eleve/${classeId}?pid=${pid}`}> Suite </a>
+          <a href={`/eleve/?pid=${pid}&cid=${cid}`}> Suite </a>
 
         </div>
       </div>

@@ -45,3 +45,13 @@ body {
 button:focus {
   background-color: green!important;
 }
+
+.is-active {
+  font-weight: bold!important;
+  background-color: beige;
+}
+
+.cursor {
+  cursor: pointer;
+  
+}

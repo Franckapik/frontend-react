@@ -4,13 +4,15 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
-
 const Exercice = () => {
-  let { evaId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
   const exo = searchParams.get("exo");
   const pid = searchParams.get("pid");
+  const cid = searchParams.get("cid");
+  const eid = searchParams.get("eid");
+  const uid = searchParams.get("uid");
   const navigate = useNavigate();
+  console.log(searchParams.entries());
 
   const queryClient = useQueryClient();
 
@@ -20,7 +22,7 @@ const Exercice = () => {
     data: exercices,
     isSuccess,
   } = useQuery("exercices", () =>
-    fetch(`http://localhost:1337/api/exercices?populate=*&filters[evaluation]=${evaId}`).then((res) => res.json())
+    fetch(`http://localhost:1337/api/exercices?populate=*&filters[evaluation]=${eid}`).then((res) => res.json())
   );
 
   const { data: questions, isSuccess: isQuestioning } = useQuery(
@@ -34,7 +36,7 @@ const Exercice = () => {
     }
   );
 
-/*   const { data: completion } = useQuery("completions", () =>
+  /*   const { data: completion } = useQuery("completions", () =>
     fetch(`http://localhost:1337/api/completion?populate=*&filters[progression]=${pid}`).then((res) => res.json())
   ); */
 
@@ -57,11 +59,13 @@ const Exercice = () => {
       );
     },
     {
-      onSuccess: (evaId) => {
+      onSuccess: (eid) => {
         queryClient.invalidateQueries(["completions"]);
       },
     }
   );
+
+  console.log(...searchParams);
 
   //useEffect for create completion id and then update?
 
@@ -71,21 +75,34 @@ const Exercice = () => {
         <nav className="breadcrumb has-arrow-separator m-2" aria-label="breadcrumbs">
           <ul>
             <li>
-              <a href="#">Evaluation</a>
-            </li>
-            <li>
-              <a href="#">Exercice 1 </a>
-            </li>
-            <li className="is-active">
-              <a href="#" aria-current="page">
-                Exercice 2
+              <a href={`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}&eid=${eid}`} className="p-2">
+                Evaluation
               </a>
             </li>
+
+            {isSuccess &&
+              exercices.data.map((exercice, i) => {
+                return (
+                  <li className={i === Number(exo) ? "is-active" : ""}>
+                    <span
+                      className="p-2 cursor"
+                      onClick={() =>
+                        setSearchParams((searchParams) => {
+                          searchParams.set("exo", i);
+                          return searchParams;
+                        })
+                      }
+                    >
+                      Exercice {exercice.attributes.numero}{" "}
+                    </span>
+                  </li>
+                );
+              })}
           </ul>
         </nav>
       </div>
       <div className="is-size-4">
-        {isSuccess && (
+        {isSuccess && exercices.data[exo] && (
           <div>
             <div className="card bg-light-50">
               <div className="card-content">
@@ -96,30 +113,31 @@ const Exercice = () => {
                   <div value={exercices.data[exo].id}>
                     <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
 
-                    {isQuestioning && questions.data.map((question, i) => {
-                      return (
-                        <>
-                          <div className=" box has-text-weight-semibold" key={"question" + i}>
-                            Question {i + 1} - [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
-                            {question.attributes.contenu}
-                          </div>
-                          <div className="buttons is-flex is-flex-wrap-wrap">
-                            {question.attributes.reponses.data.map((reponse, i) => {
-                              return (
-                                <button
-                                  key={"reponse" + i}
-                                  className="button is-primary is-info is-flex-basis50 reponse is-size-4 m-3"
-                                  onClick={() => hasAnswer([question.id,reponse.id])}
-                                >
-                                  {reponse.attributes.type} {reponse.attributes.contenu}{" "}
-                                  {reponse.attributes.correct ? "Vrai" : "Fausse"}
-                                </button>
-                              );
-                            })}
-                          </div>
-                        </>
-                      );
-                    })}
+                    {isQuestioning &&
+                      questions.data.map((question, i) => {
+                        return (
+                          <>
+                            <div className=" box has-text-weight-semibold" key={"question" + i}>
+                              Question {i + 1} - [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
+                              {question.attributes.contenu}
+                            </div>
+                            <div className="buttons is-flex is-flex-wrap-wrap">
+                              {question.attributes.reponses.data.map((reponse, i) => {
+                                return (
+                                  <button
+                                    key={"reponse" + i}
+                                    className="button is-primary is-info is-flex-basis50 reponse is-size-4 m-3"
+                                    onClick={() => hasAnswer([question.id, reponse.id])}
+                                  >
+                                    {reponse.attributes.type} {reponse.attributes.contenu}{" "}
+                                    {reponse.attributes.correct ? "Vrai" : "Fausse"}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </>
+                        );
+                      })}
                   </div>
                 </div>
               </div>

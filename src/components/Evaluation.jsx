@@ -5,9 +5,10 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
 const Evaluation = () => {
-  let { classeId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
-  const pid = searchParams.get("pid");
+  const pid = searchParams.get("pid")
+  const cid = searchParams.get("cid")
+  const uid = searchParams.get("uid") || null
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();
@@ -18,7 +19,7 @@ const Evaluation = () => {
     data: evaluations,
     isSuccess,
   } = useQuery("evaluations", () =>
-    fetch(`http://localhost:1337/api/evaluations?populate=*&filters[classe]=${classeId}`).then((res) => res.json())
+    fetch(`http://localhost:1337/api/evaluations?populate=*&filters[classe]=${cid}`).then((res) => res.json())
   );
 
   const { isLoading: isUpdating, mutate } = useMutation(
@@ -35,7 +36,7 @@ const Evaluation = () => {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(["progression"]);
-        navigate(`/${data.data.attributes.evaluation.data.id}/exercice?pid=${pid}&exo=0`);
+        navigate(`/exercice?pid=${pid}&cid=${cid}&uid=${uid}&eid=${data.data.attributes.evaluation.data.id}&exo=0`);
       },
     }
   );
