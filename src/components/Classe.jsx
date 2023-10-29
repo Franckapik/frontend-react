@@ -23,7 +23,6 @@ const Classe = () => {
     switch (pid) {
       case null:
         const newProgression = await apiPost.postProgression({
-          contenu: "my first post",
           creation: moment(),
         })
         console.log("Nouvelle session : " + newProgression);

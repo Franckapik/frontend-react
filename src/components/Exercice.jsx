@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
@@ -11,8 +11,9 @@ const Exercice = () => {
   const cid = searchParams.get("cid");
   const eid = searchParams.get("eid");
   const uid = searchParams.get("uid");
+
+  const [listCoid, setListCoid] = useState({});
   const navigate = useNavigate();
-  console.log(searchParams.entries());
 
   const queryClient = useQueryClient();
 
@@ -40,11 +41,17 @@ const Exercice = () => {
     fetch(`http://localhost:1337/api/completion?populate=*&filters[progression]=${pid}`).then((res) => res.json())
   ); */
 
-  const { isLoading: isUpdating, mutate: hasAnswer } = useMutation(
+  const { isLoading: isUpdating, mutate: hasAnswer, data } = useMutation(
     async ([qid, rid]) => {
-      console.log(qid, rid, pid);
-      return apiPost.postCompletion(
-        {
+      console.log(listCoid);
+      if (listCoid[qid]) {
+      return apiPost.updateCompletion({
+        reponse: {
+          id: rid,
+        },
+      }, listCoid[qid]);  
+      } else {
+        return apiPost.postCompletion({
           progression: {
             id: pid,
           },
@@ -54,18 +61,19 @@ const Exercice = () => {
           reponse: {
             id: rid,
           },
-        },
-        pid
-      );
+        }); 
+      }
+      
     },
     {
-      onSuccess: (eid) => {
+      onSuccess: (coid) => {
         queryClient.invalidateQueries(["completions"]);
+        var obj = {...listCoid};
+        obj[coid.data.attributes.question.data.id] = coid.data.id;
+        setListCoid(obj);
       },
     }
   );
-
-  console.log(...searchParams);
 
   //useEffect for create completion id and then update?
 
@@ -83,7 +91,7 @@ const Exercice = () => {
             {isSuccess &&
               exercices.data.map((exercice, i) => {
                 return (
-                  <li className={i === Number(exo) ? "is-active" : ""}>
+                  <li key={"breadcrumb_exo" + i} className={i === Number(exo) ? "is-active" : ""}>
                     <span
                       className="p-2 cursor"
                       onClick={() =>

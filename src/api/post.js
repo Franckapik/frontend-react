@@ -30,11 +30,25 @@ export const updateProgression = (data, id) =>
 
 export const postCompletion = (data) =>
   axios
-    .post(`http://localhost:1337/api/completions`, {
+    .post(`http://localhost:1337/api/completions?populate=*`, {
       data: data,
     })
     .then((response) => {
       console.info("[POST] [Completion] [/api/completions]");
+      return response.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+
+export const updateCompletion = (data, id) =>
+  axios
+    .put(`http://localhost:1337/api/completions/${id}?populate=*`, {
+      data: data,
+    })
+    .then((response) => {
+      console.info(`[UPDATE] [Completion] [/api/completions/${id}]`);
       return response.data;
     })
     .catch((err) => {
