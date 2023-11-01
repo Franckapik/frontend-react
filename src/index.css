@@ -43,12 +43,17 @@ body {
 }
 
 button:focus {
-  background-color: green!important;
+  border-color: brown;
 }
 
 .is-active {
   font-weight: bold!important;
-  background-color: beige;
+  background-color: beige!important;
+}
+
+.is-selected {
+  background-color: rgb(95, 236, 142)!important;
+
 }
 
 .cursor {

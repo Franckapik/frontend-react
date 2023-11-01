@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
+import { Question } from "./Question.jsx";
 
 const Exercice = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -34,44 +35,6 @@ const Exercice = () => {
       ),
     {
       enabled: !!exercices,
-    }
-  );
-
-  /*   const { data: completion } = useQuery("completions", () =>
-    fetch(`http://localhost:1337/api/completion?populate=*&filters[progression]=${pid}`).then((res) => res.json())
-  ); */
-
-  const { isLoading: isUpdating, mutate: hasAnswer, data } = useMutation(
-    async ([qid, rid]) => {
-      console.log(listCoid);
-      if (listCoid[qid]) {
-      return apiPost.updateCompletion({
-        reponse: {
-          id: rid,
-        },
-      }, listCoid[qid]);  
-      } else {
-        return apiPost.postCompletion({
-          progression: {
-            id: pid,
-          },
-          question: {
-            id: qid,
-          },
-          reponse: {
-            id: rid,
-          },
-        }); 
-      }
-      
-    },
-    {
-      onSuccess: (coid) => {
-        queryClient.invalidateQueries(["completions"]);
-        var obj = {...listCoid};
-        obj[coid.data.attributes.question.data.id] = coid.data.id;
-        setListCoid(obj);
-      },
     }
   );
 
@@ -122,30 +85,9 @@ const Exercice = () => {
                     <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
 
                     {isQuestioning &&
-                      questions.data.map((question, i) => {
-                        return (
-                          <>
-                            <div className=" box has-text-weight-semibold" key={"question" + i}>
-                              Question {i + 1} - [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
-                              {question.attributes.contenu}
-                            </div>
-                            <div className="buttons is-flex is-flex-wrap-wrap">
-                              {question.attributes.reponses.data.map((reponse, i) => {
-                                return (
-                                  <button
-                                    key={"reponse" + i}
-                                    className="button is-primary is-info is-flex-basis50 reponse is-size-4 m-3"
-                                    onClick={() => hasAnswer([question.id, reponse.id])}
-                                  >
-                                    {reponse.attributes.type} {reponse.attributes.contenu}{" "}
-                                    {reponse.attributes.correct ? "Vrai" : "Fausse"}
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </>
-                        );
-                      })}
+                      questions.data.map((question, i) => (
+                        <Question pid={pid} question={question} i={i} />
+                      ))}
                   </div>
                 </div>
               </div>
