@@ -52,7 +52,7 @@ const Exercice = () => {
                   <div value={exercices.data[exo].id}>
                     <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
                     {isQuestioning && questions.data.length > 0
-                      ? questions.data.map((question, i) => <Question pid={pid} question={question} i={i} />)
+                      ? questions.data.map((question, i) => <Question pid={pid} question={question}  />)
                       : "Pas de questions"}
                   </div>
                 </div>
