@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import * as apiPost from "../api/post.js";
 
 export const Question = ({ question, pid }) => {
   const queryClient = useQueryClient();
 
-  const [coid, setCoid] = useState();
-
-  const { isCompleted, error, data: completion } = useQuery('completions', () =>
+  const { data: completion } = useQuery('completions', () =>
   fetch(`http://localhost:1337/api/completions?populate=*&filters[progression]=${pid}&filters[question]=${question.id}`).then(res =>
     res.json()
   ),

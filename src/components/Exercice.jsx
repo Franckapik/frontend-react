@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import * as apiPost from "../api/post.js";
+import { useQuery } from "react-query";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Question } from "./Question.jsx";
+import { Breadcrumb } from "./BreadCrumb.jsx";
 
 const Exercice = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -13,10 +13,7 @@ const Exercice = () => {
   const eid = searchParams.get("eid");
   const uid = searchParams.get("uid");
 
-  const [listCoid, setListCoid] = useState({});
   const navigate = useNavigate();
-
-  const queryClient = useQueryClient();
 
   const {
     isLoading,
@@ -38,40 +35,11 @@ const Exercice = () => {
     }
   );
 
-  //useEffect for create completion id and then update?
-
   return (
     <div>
-      <div>
-        <nav className="breadcrumb has-arrow-separator m-2" aria-label="breadcrumbs">
-          <ul>
-            <li>
-              <a href={`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}&eid=${eid}`} className="p-2">
-                Evaluation
-              </a>
-            </li>
-
-            {isSuccess &&
-              exercices.data.map((exercice, i) => {
-                return (
-                  <li key={"breadcrumb_exo" + i} className={i === Number(exo) ? "is-active" : ""}>
-                    <span
-                      className="p-2 cursor"
-                      onClick={() =>
-                        setSearchParams((searchParams) => {
-                          searchParams.set("exo", i);
-                          return searchParams;
-                        })
-                      }
-                    >
-                      Exercice {exercice.attributes.numero}{" "}
-                    </span>
-                  </li>
-                );
-              })}
-          </ul>
-        </nav>
-      </div>
+      {isSuccess && (
+        <Breadcrumb exercices={exercices} setSearchParams={setSearchParams} searchParams={searchParams} exo={exo} />
+      )}
       <div className="is-size-4">
         {isSuccess && exercices.data[exo] && (
           <div>
@@ -85,9 +53,7 @@ const Exercice = () => {
                     <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
 
                     {isQuestioning &&
-                      questions.data.map((question, i) => (
-                        <Question pid={pid} question={question} i={i} />
-                      ))}
+                      questions.data.map((question, i) => <Question pid={pid} question={question} i={i} />)}
                   </div>
                 </div>
               </div>
