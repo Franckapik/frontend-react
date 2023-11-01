@@ -38,7 +38,6 @@ export const Question = ({ question, pid }) => {
     mutate: hasAnswer,
   } = useMutation(
     async ({rid, score}) => {
-      console.log(score);
       return apiPost.updateCompletion(
         {
           reponse: {
@@ -72,7 +71,7 @@ export const Question = ({ question, pid }) => {
               className={`button is-primary is-info is-flex-basis50 reponse is-size-4 m-3 ${completion && completion.data[0].attributes.reponse.data?.id == reponse.id ? "is-selected" : ""}  `}
               onClick={() => hasAnswer({rid : reponse.id, score: reponse.attributes.correct ? question.attributes.score : 0})}
             >
-              {reponse.attributes.type} {reponse.attributes.contenu} {reponse.attributes.correct ? "Vrai" : "Fausse"}
+              {reponse.attributes.type} {reponse.attributes.contenu}
             </button>
           );
         })}
