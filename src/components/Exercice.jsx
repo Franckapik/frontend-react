@@ -31,7 +31,7 @@ const Exercice = () => {
         res.json()
       ),
     {
-      enabled: !!exercices,
+      enabled: !!exercices && !!exo,
     }
   );
 
@@ -51,9 +51,9 @@ const Exercice = () => {
                 <div className="content">
                   <div value={exercices.data[exo].id}>
                     <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
-
-                    {isQuestioning &&
-                      questions.data.map((question, i) => <Question pid={pid} question={question} i={i} />)}
+                    {isQuestioning && questions.data.length > 0
+                      ? questions.data.map((question, i) => <Question pid={pid} question={question} i={i} />)
+                      : "Pas de questions"}
                   </div>
                 </div>
               </div>
