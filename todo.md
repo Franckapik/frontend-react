@@ -6,6 +6,9 @@ Pourquoi obliger de resfresh la page pour avoir les questions
 
 Pourquoi les deux exercices ensemble sur lexo 1 ?
 
+Defaut d'affichage après fetching de "questions" selon le param exo. 
+Faut-il faire un component exercices et exercice ? ou un filter de map p^lutot ? 
+
 Les types de questions et les réponses multiples
 
 Un mode correction avec les scores et les bonnes réponses visibles

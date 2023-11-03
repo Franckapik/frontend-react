@@ -1,17 +1,13 @@
-import React from "react";
-import ReactMarkdown from "react-markdown";
+import React, { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Question } from "./Question.jsx";
 import { Breadcrumb } from "./BreadCrumb.jsx";
+import { Exo } from "./Exo.jsx";
 
 const Exercice = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const exo = searchParams.get("exo");
-  const pid = searchParams.get("pid");
-  const cid = searchParams.get("cid");
   const eid = searchParams.get("eid");
-  const uid = searchParams.get("uid");
 
   const navigate = useNavigate();
 
@@ -24,42 +20,22 @@ const Exercice = () => {
     fetch(`http://localhost:1337/api/exercices?populate=*&filters[evaluation]=${eid}`).then((res) => res.json())
   );
 
-  const { data: questions, isSuccess: isQuestioning } = useQuery(
-    "questions",
-    () =>
-      fetch(`http://localhost:1337/api/questions?populate=*&filters[exercice]=${exercices.data[exo].id}`).then((res) =>
-        res.json()
-      ),
-    {
-      enabled: !!exercices && !!exo,
-    }
-  );
-
   return (
     <div>
       {isSuccess && (
         <Breadcrumb exercices={exercices} setSearchParams={setSearchParams} searchParams={searchParams} exo={exo} />
       )}
       <div className="is-size-4">
-        {isSuccess && exercices.data[exo] && (
+        {isSuccess && exercices.data.filter((a,i) => i == exo).map((exercice) => <Exo exercice={exercice} />)}
+        {isSuccess && exo && (
           <div>
-            <div className="card bg-light-50">
-              <div className="card-content">
-                <div className="">
-                  Exercice n° {exercices.data[exo].attributes.numero} : {exercices.data[exo].attributes.titre}
-                </div>
-                <div className="content">
-                  <div value={exercices.data[exo].id}>
-                    <ReactMarkdown>{exercices.data[exo].attributes.contenu}</ReactMarkdown>
-                    {isQuestioning && questions.data.length > 0
-                      ? questions.data.map((question, i) => <Question pid={pid} question={question}  />)
-                      : "Pas de questions"}
-                  </div>
-                </div>
-              </div>
-            </div>
             {exo < exercices.data.length - 1 ? (
-              <button onClick={() => navigate({ search: `?exo=${Number(exo) + 1}` })}>Suivant</button>
+              <button onClick={() =>
+                setSearchParams((searchParams) => {
+                  searchParams.set("exo", Number(exo + 1));
+                  return searchParams;
+                })
+              } >Suivant</button>
             ) : (
               "Retour"
             )}
