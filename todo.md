@@ -2,12 +2,7 @@ Classe => Eleve => Evaluation => Exercices
 
 CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
 
-Pourquoi obliger de resfresh la page pour avoir les questions
-
-Pourquoi les deux exercices ensemble sur lexo 1 ?
-
-Defaut d'affichage après fetching de "questions" selon le param exo. 
-Faut-il faire un component exercices et exercice ? ou un filter de map p^lutot ? 
+Espoir : Avoir une liste des eleves avec leur completion et leur note totale
 
 Les types de questions et les réponses multiples
 

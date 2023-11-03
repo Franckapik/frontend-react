@@ -1,98 +1,120 @@
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
-
 const Classe = () => {
-  const [cid, setClasseId] = useState(1);
-  const [pid, setProgressionId] = useState(sessionStorage.getItem("sessionPid"));
-  const navigate = useNavigate()
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [cid, setClasseId] = useState();
+  const [uid, setEleveId] = useState();
+  const pid = sessionStorage.getItem("sessionPid");
   const queryClient = useQueryClient();
+  const navigate= useNavigate()
 
 
-  const { isLoading, error, data: classes } = useQuery('classes', () =>
-    fetch('http://localhost:1337/api/classes').then(res =>
-      res.json()
-    )
-  )
+  const {
+    isSuccess: isSuccessClasse,
+    data: classes,
+  } = useQuery("classes", () => fetch("http://localhost:1337/api/classes?populate=*").then((res) => res.json()));
 
-  const { isLoading: isUpdating, isSuccess, mutate } = useMutation(async () => {
+  const {
+    mutate: changeProgression,
+  } = useMutation(
+    async () => {
+      switch (pid) {
+        case null:
+          const newProgression = await apiPost.postProgression({
+            creation: moment(),
+            classe: {
+              id: cid,
+            },
+            eleve: {
+              id: uid,
+            },
+          });
+          sessionStorage.setItem("sessionPid", newProgression.data.id);
+          console.log("Nouvelle session : " + newProgression);
+          return newProgression;
+          break;
 
-    switch (pid) {
-      case null:
-        const newProgression = await apiPost.postProgression({
-          creation: moment(),
-        })
-        console.log("Nouvelle session : " + newProgression);
-        sessionStorage.setItem("sessionPid", newProgression.data.id)
-        return newProgression
-        break;
-
-      default:
-        const retrieveProgression = await apiPost.updateProgression({
-          reprise: moment()
-        }, pid);
-        console.log("Reprise de session : " + retrieveProgression.data.id);
-        navigate({ search: `?pid=${pid}` })
-        return retrieveProgression
-        break;
-    }
-
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['progression'])
-    }
-  })
-
-  useEffect(() => {
-    mutate()
-  }, [])
-
-  const { mutate: addClasse } = useMutation(async (e) => {
-    e.preventDefault();
-    setClasseId(e.target.value)
-    return apiPost.updateProgression({
-      classe: {
-        id: e.target.value
+        default:
+          const retrieveProgression = await apiPost.updateProgression(
+            {
+              reprise: moment(),
+            },
+            pid
+          );
+          console.log("Reprise de session : " + retrieveProgression.data.id);
+          setSearchParams((a) => {
+            a.set("pid", pid);
+            return searchParams;
+          })
+          return retrieveProgression;
+          break;
       }
-    }, pid);
-
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['progression'])
+    },
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(["progression"]);
+        navigate(`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}`)
+      },
     }
-  })
-
+  );
 
   return (
+    <div>
+      <div>
+        <p className="title m-3">Dans quelle classe est-tu ? </p>
+      </div>
+      <div>
+        {isSuccessClasse && classes.data?.length ? (
+          <select
+            name="classes"
+            id="classes-select"
+            className="select is-large m-5"
+            onChange={(e) => setClasseId(e.target.value)}
+            defaultValue={-1}
+          >
+            <option key={"default select"} value="-1" disabled="disabled">
+              -- classes de Pierre Perrin --
+            </option>
+
+            {classes.data?.map((classe) => (
+              <option key={"classe" + classe.id} value={classe.id}>
+                {classe.attributes.Classe}
+              </option>
+            ))}
+          </select>
+        ) : (
+          "Chargement"
+        )}
+      </div>
       <div>
         <div>
-          <p className="title m-3">Dans quelle classe est-tu ? </p>
-        </div>
-        <div>
-          {isLoading ? "Chargement" : (
-            <select
-              name="classes"
-              id="classes-select"
-              className="select is-large m-5"
-              onChange={addClasse}
-              defaultValue={-1}
-            >
-              <option key={"default select"} value="-1"  disabled="disabled" >-- classes de Pierre Perrin --</option>
-
-              {classes.data.map((classe) => (
-                <option key={"classe" + classe.id} value={classe.id}>{classe.attributes.Classe}</option>
-              ))}
-            </select>
-          )}
-        </div>
-        <div>
-          <a href={`/eleve/?pid=${pid}&cid=${cid}`}> Suite </a>
-
+          <select
+            name="eleve"
+            id="eleve-select"
+            className="select is-large m-5"
+            defaultValue={-1}
+            onChange={(e) => setEleveId(e.target.value)}
+          >
+            <option key={"default select"} value={-1} disabled="disabled">
+              -- selectionne ton prénom --
+            </option>
+            {cid &&
+              classes?.data
+                .filter((a) => a.id == cid)[0]
+                .attributes.eleve.data.map((eleve) => (
+                  <option key={"eleve" + eleve.id} value={eleve.id}>
+                    {eleve.attributes.Nom}
+                  </option>
+                ))}
+          </select>
         </div>
       </div>
+      <button onClick={changeProgression}>Valider</button>
+    </div>
   );
 };
 

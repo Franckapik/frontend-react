@@ -10,6 +10,7 @@ import Exercice from "./components/Exercice.jsx";
 import Layout from "./components/Layout.jsx";
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
 import {ReactQueryDevtools} from 'react-query/devtools'
+import { Monitor } from "./components/Monitor";
 
 const queryClient = new QueryClient()
 
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/evaluation" element={<Layout title={"Evaluation"}><Evaluation /></Layout>} />
         <Route path="/exercice" element={<Layout title={"Exercice"}><Exercice /></Layout>} />
         <Route path="/eleve" element={<Layout title={"Eleve"}><Eleve /></Layout>} />
+        <Route path="/monitor" element={<Monitor />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />
     </BrowserRouter></QueryClientProvider>
