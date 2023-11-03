@@ -24,7 +24,7 @@ export const Progression = () => {
 
   return (
     <>
-      {isSuccess ? (
+      {isSuccess && progression.data.length ? (
         <>
           <div className="is-flex is-justify-content-space-around p-2 footer-absolute ">
             <div>
@@ -57,11 +57,11 @@ export const Progression = () => {
             <tbody>
               <tr>
                 <td>
-                  {progression.data[0].attributes.eleve?.data != null &&  progression.data[0].attributes.eleve.data.attributes.Nom
+                  {progression.data[0]?.attributes.eleve?.data != null &&  progression.data[0].attributes.eleve.data.attributes.Nom
                   }
                 </td>
                 <td>
-                  {progression.data[0].attributes.classe?.data != null && progression.data[0].attributes.classe.data.attributes.Classe
+                  {progression.data[0]?.attributes.classe?.data != null && progression.data[0].attributes.classe.data.attributes.Classe
                    }
                 </td>
                 <td>/20</td>

@@ -1,16 +1,15 @@
+import 'bulma/css/bulma.min.css';
 import React from "react";
 import ReactDOM from "react-dom/client";
-import 'bulma/css/bulma.min.css';
-import './index.css';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Evaluation from "./components/Evaluation";
-import Eleve from "./components/Eleve";
 import Classe from "./components/Classe.jsx";
+import Evaluation from "./components/Evaluation";
 import Exercice from "./components/Exercice.jsx";
 import Layout from "./components/Layout.jsx";
-import { QueryClient, QueryClientProvider, useQuery } from 'react-query'
-import {ReactQueryDevtools} from 'react-query/devtools'
 import { Monitor } from "./components/Monitor";
+import './index.css';
 
 const queryClient = new QueryClient()
 
@@ -23,7 +22,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/" element={<Layout title={"Classe"}><Classe /></Layout>} />
         <Route path="/evaluation" element={<Layout title={"Evaluation"}><Evaluation /></Layout>} />
         <Route path="/exercice" element={<Layout title={"Exercice"}><Exercice /></Layout>} />
-        <Route path="/eleve" element={<Layout title={"Eleve"}><Eleve /></Layout>} />
         <Route path="/monitor" element={<Monitor />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />

@@ -33,6 +33,9 @@ export const Question = ({ question }) => {
         question: {
           id: question.id,
         },
+        exercice : {
+          id : question.data.attributes.exercice.data.id
+        }
       });
     },
     {

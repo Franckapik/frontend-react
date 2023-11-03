@@ -8,7 +8,7 @@ const Classe = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cid, setClasseId] = useState();
   const [uid, setEleveId] = useState();
-  const pid = sessionStorage.getItem("sessionPid");
+  const sessionPid = sessionStorage.getItem("sessionPid");
   const queryClient = useQueryClient();
   const navigate= useNavigate()
 
@@ -22,7 +22,7 @@ const Classe = () => {
     mutate: changeProgression,
   } = useMutation(
     async () => {
-      switch (pid) {
+      switch (sessionPid) {
         case null:
           const newProgression = await apiPost.postProgression({
             creation: moment(),
@@ -34,7 +34,11 @@ const Classe = () => {
             },
           });
           sessionStorage.setItem("sessionPid", newProgression.data.id);
-          console.log("Nouvelle session : " + newProgression);
+          console.log("Nouvelle session : " + newProgression.data.id);
+          setSearchParams((a) => {
+            a.set("pid", newProgression.data.id);
+            return searchParams;
+          })
           return newProgression;
           break;
 
@@ -43,11 +47,11 @@ const Classe = () => {
             {
               reprise: moment(),
             },
-            pid
+            sessionPid
           );
           console.log("Reprise de session : " + retrieveProgression.data.id);
           setSearchParams((a) => {
-            a.set("pid", pid);
+            a.set("pid", sessionPid);
             return searchParams;
           })
           return retrieveProgression;
@@ -57,7 +61,7 @@ const Classe = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["progression"]);
-        navigate(`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}`)
+        navigate(`/evaluation?pid=${searchParams.get("pid")}&cid=${cid}&uid=${uid}`)
       },
     }
   );
@@ -113,7 +117,7 @@ const Classe = () => {
           </select>
         </div>
       </div>
-      <button onClick={changeProgression}>Valider</button>
+      <button onClick={changeProgression}>Evaluation</button>
     </div>
   );
 };
