@@ -1,14 +1,13 @@
-import moment from "moment";
 import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
 const Evaluation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pid = searchParams.get("pid")
   const cid = searchParams.get("cid")
-  const uid = searchParams.get("uid") || null
+  const uid = searchParams.get("uid")
   const navigate = useNavigate();
 
   const queryClient = useQueryClient();

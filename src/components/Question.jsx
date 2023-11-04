@@ -9,7 +9,7 @@ export const Question = ({ question }) => {
 
   const queryClient = useQueryClient();
 
-  const { data: completion } = useQuery(
+  const { isSuccess : isSuccessCompletion, data: completion } = useQuery(
     "completions",
     () =>
       fetch(
@@ -34,7 +34,7 @@ export const Question = ({ question }) => {
           id: question.id,
         },
         exercice : {
-          id : question.data.attributes.exercice.data.id
+          id : question.attributes.exercice.data.id
         }
       });
     },
@@ -66,9 +66,9 @@ export const Question = ({ question }) => {
 
   return (
     <>
-      <div className=" box has-text-weight-semibold">
+      {isSuccessCompletion && completion.data.length && <><div className=" box has-text-weight-semibold">
         Question : [{question.attributes.type}] - Niveau {question.attributes.niveau} - {question.attributes.contenu} -
-        [{completion && completion.data[0].id}]
+        [{completion && completion.data[0]?.id}]
       </div>
       <div className="buttons is-flex is-flex-wrap-wrap">
         {question.attributes.reponses.data.map((reponse, i) => {
@@ -86,7 +86,7 @@ export const Question = ({ question }) => {
             </button>
           );
         })}
-      </div>
+      </div></>}
     </>
   );
 };
