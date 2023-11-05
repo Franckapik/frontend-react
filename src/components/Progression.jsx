@@ -61,6 +61,12 @@ export const Progression = () => {
                     progression.data[0]?.attributes.classe?.data != null &&
                     progression.data[0].attributes.classe.data.attributes.Classe}{" "}
                 </th>
+                <th> 
+                  {papier === null && correction !== null ?  "NOTE : " : ""}
+                 
+                  {papier === null && correction !== null &&
+                    progression.data[0]?.attributes.points + " / " +  progression.data[0]?.attributes.evaluation.data?.attributes.score }
+                </th>
               </tr>
             </thead>
             <tbody>

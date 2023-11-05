@@ -11,8 +11,6 @@ export const Question = ({ question, exo, index }) => {
 
   const queryClient = useQueryClient();
 
-  console.log(index);
-
   const { isSuccess: isSuccessCompletion, data: completion } = useQuery(
     "completions" + "E" + exo.id + "Q" + index,
     () =>
@@ -62,7 +60,7 @@ export const Question = ({ question, exo, index }) => {
       );
     },
     {
-      onSuccess: (completion) => {
+      onSuccess: () => {
         queryClient.invalidateQueries([ "completions" + "E" + exo.id + "Q" + index]);
       },
     }
