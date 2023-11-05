@@ -70,9 +70,9 @@ export const Question = ({ question, index }) => {
     <>
       {isSuccessCompletion && completion.data.length && (
         <>
-          <div className={papier!== null ? `has-text-weight-bold  pb-4`  : `box has-text-weight-semibold`} >
-          {papier !== null ?"► ": ""}  Question {index + 1} : [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
-            {question.attributes.contenu} 
+          <div className={papier !== null ? `has-text-weight-bold  pb-4` : `box has-text-weight-semibold`}>
+            {papier !== null ? "► " : ""} Question {index + 1} : [{question.attributes.type}] - Niveau{" "}
+            {question.attributes.niveau} - {question.attributes.contenu}
             {correction !== null && completion.data[0]?.attributes.points + "/" + question.attributes.score}
           </div>
           <div className={papier !== null ? `` : `is-flex is-flex-wrap-wrap`}>
@@ -94,7 +94,8 @@ export const Question = ({ question, index }) => {
                     hasAnswer({ rid: reponse.id, score: reponse.attributes.correct ? question.attributes.score : 0 })
                   }
                 >
-               {papier !== null ?" □ ": ""}  {reponse.attributes.type} {reponse.attributes.contenu}
+                  {papier !== null ? (correction !== null && reponse.attributes.correct ? "▣" : "□") : ""} {reponse.attributes.type}{" "}
+                  {reponse.attributes.contenu}
                 </div>
               );
             })}
