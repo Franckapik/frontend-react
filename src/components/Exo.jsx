@@ -24,7 +24,7 @@ export const Exo = ({ exercice : exo }) => {
           <div>
             <ReactMarkdown>{exo.attributes.contenu}</ReactMarkdown>
             {isQuestioning && questions.data.length > 0
-              ? questions.data.map((question) => <Question question={question} />)
+              ? questions.data.map((question, i) => <Question question={question} index={i} />)
               : "Pas de questions"}
           </div>
         </div>

@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import * as apiPost from "../api/post.js";
 import { useSearchParams } from "react-router-dom";
 
-export const Question = ({ question }) => {
+export const Question = ({ question, index }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pid = searchParams.get("pid");
   const correction = searchParams.get("correction");
@@ -71,7 +71,7 @@ export const Question = ({ question }) => {
       {isSuccessCompletion && completion.data.length && (
         <>
           <div className={papier!== null ? `has-text-weight-bold  pb-4`  : `box has-text-weight-semibold`} >
-          {papier !== null ?"► ": ""}  Question : [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
+          {papier !== null ?"► ": ""}  Question {index + 1} : [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
             {question.attributes.contenu} 
             {correction !== null && completion.data[0]?.attributes.points + "/" + question.attributes.score}
           </div>
