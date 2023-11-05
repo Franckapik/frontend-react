@@ -70,7 +70,7 @@ export const Monitor = () => {
                   <td>
                     {a.attributes.evaluation.data?.attributes.Nom} [EID {a.attributes.evaluation.data?.id}]
                   </td>
-                  <td>{a.attributes.completions.data?.length}</td>
+                  <td>{a.attributes.completions.data?.length} :{a.attributes.completions.data?.map(a => ' [' + a.id + '] ' )} </td>
                   <td>
                     {" "}
                     {a.attributes.points} pt(s)
@@ -93,6 +93,44 @@ export const Monitor = () => {
                 </tr>
               </tbody>
             ))}
+
+            
+      </table>
+
+      <table className="table is-striped is-fullwidth">
+        <thead>
+          <tr>
+            <th>PID</th>
+            <th>CLASSE</th>
+            <th>ELEVE</th>
+            <th>EVALUATION</th>
+            <th>COMPETENCE 1</th>
+
+          </tr>
+        </thead>
+        {completions &&
+          completions.data
+            .filter((a) => (time != 0 ? moment() - moment(a.attributes.creation) <= time : true))
+            .map((a, i) => (
+              <tbody>
+                <tr>
+                  <td>{a.id}</td>
+                  <td>
+                    {a.attributes.classe.data?.attributes.Classe} [CID {a.attributes.classe.data?.id}]{" "}
+                  </td>
+
+                  <td>
+                    {a.attributes.eleve.data?.attributes.Nom} [UID {a.attributes.eleve.data?.id} ]
+                  </td>
+                  <td>
+                    {a.attributes.evaluation.data?.attributes.Nom} [EID {a.attributes.evaluation.data?.id}]
+                  </td>
+
+                </tr>
+              </tbody>
+            ))}
+
+            
       </table>
     </div>
   );

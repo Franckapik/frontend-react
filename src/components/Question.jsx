@@ -2,6 +2,7 @@ import React from "react";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import * as apiPost from "../api/post.js";
 import { useSearchParams } from "react-router-dom";
+import { Competences } from "./Competences.jsx";
 
 export const Question = ({ question, exo, index }) => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,7 +16,7 @@ export const Question = ({ question, exo, index }) => {
     "completions" + "E" + exo.id + "Q" + index,
     () =>
       fetch(
-        `http://localhost:1337/api/completions?populate=*&filters[progression]=${pid}&filters[question]=${question.id}`
+        `http://localhost:1337/api/completions?populate=deep&filters[progression]=${pid}&filters[question]=${question.id}`
       ).then((res) => res.json()),
     {
       onSuccess: (completion) => {
@@ -48,13 +49,19 @@ export const Question = ({ question, exo, index }) => {
   );
 
   const { mutate: hasAnswer } = useMutation(
-    async ({ rid, score }) => {
+    async ({ rid, score, comp, niveau }) => {
       return apiPost.updateCompletion(
         {
           reponse: {
             id: rid,
           },
           points: score,
+          validation: [
+            {
+              competence: comp,
+              niveau: niveau,
+            },
+          ],
         },
         completion.data[0].id
       );
@@ -74,6 +81,13 @@ export const Question = ({ question, exo, index }) => {
             {papier !== null ? "► " : ""} Question {index} : [{question.attributes.type}] - Niveau{" "}
             {question.attributes.niveau} - {question.attributes.contenu}
             {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
+            <div>
+              {correction !== null && completion.data[0]?.attributes.validation.length
+                ? completion.data[0]?.attributes.validation[0]?.competence.data?.attributes.Nom +
+                  ":" +
+                  completion.data[0]?.attributes.validation[0]?.niveau
+                : question.attributes.competence.data?.attributes.Nom}
+            </div>
           </div>
           <div className={papier !== null ? `` : `is-flex is-flex-wrap-wrap`}>
             {question.attributes.reponses.data.map((reponse, i) => {
@@ -91,7 +105,12 @@ export const Question = ({ question, exo, index }) => {
                   }
                   onClick={() =>
                     correction === null &&
-                    hasAnswer({ rid: reponse.id, score: reponse.attributes.correct ? question.attributes.score : 0 })
+                    hasAnswer({
+                      rid: reponse.id,
+                      score: reponse.attributes.correct ? question.attributes.score : 0,
+                      comp: question.attributes.competence.data.id,
+                      niveau: reponse.attributes.correct ? "4" : "1",
+                    })
                   }
                 >
                   {papier !== null

@@ -22,7 +22,7 @@ export const Exo = ({ exercice: exo, setPointsEva }) => {
     "completions" + "E" + exo.id,
     () =>
       fetch(
-        `http://localhost:1337/api/completions?populate=*&filters[progression]=${pid}&filters[exercice]=${exo.id}`
+        `http://localhost:1337/api/completions?populate=deep&filters[progression]=${pid}&filters[exercice]=${exo.id}`
       ).then((res) => res.json()),
     {
       onSuccess: (completions) => {
