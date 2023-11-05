@@ -2,11 +2,13 @@ Classe => Eleve => Evaluation => Exercices
 
 CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
 
-Espoir : Avoir une liste des eleves avec leur completion et leur note totale
-
-Les types de questions et les réponses multiples
+Bien controller que les eva id sont bie  pris en compte dans la prgression
 
 Un mode correction avec les scores et les bonnes réponses visibles
+
+Espoir : Avoir une liste des eleves avec leur completion et leur note totale. La note totale doit etre réfléchie en fonction du score total de l'évaluation.
+
+Les types de questions et les réponses multiples
 
 cmt preserver les queries lors d'un url
 

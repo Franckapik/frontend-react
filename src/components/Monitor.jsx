@@ -43,11 +43,14 @@ export const Monitor = () => {
         <thead>
           <tr>
             <th>PID</th>
+            <th>CLASSE</th>
             <th>ELEVE</th>
+            <th>EVALUATION</th>
             <th>REPONSES</th>
             <th>POINTS</th>
             <th>CONNECTION</th>
             <th>MAJ</th>
+            <th>SESSION</th>
           </tr>
         </thead>
         {completions &&
@@ -56,10 +59,17 @@ export const Monitor = () => {
             .map((a, i) => (
               <tbody>
                 <tr>
-                  {console.log(moment() - moment(a.attributes.creation))}
-
                   <td>{a.id}</td>
-                  <td>{a.attributes.eleve.data?.attributes.Nom}</td>
+                  <td>
+                    {a.attributes.classe.data?.attributes.Classe} [CID {a.attributes.classe.data?.id}]{" "}
+                  </td>
+
+                  <td>
+                    {a.attributes.eleve.data?.attributes.Nom} [UID {a.attributes.eleve.data?.id} ]
+                  </td>
+                  <td>
+                    {a.attributes.evaluation.data?.attributes.Nom} [EID {a.attributes.evaluation.data?.id}]
+                  </td>
                   <td>{a.attributes.completions.data?.length}</td>
                   <td>
                     {" "}
@@ -72,6 +82,13 @@ export const Monitor = () => {
                       <i className="fa-solid fa-round"></i>
                     </span>{" "}
                     {moment(a.attributes.updatedAt).fromNow()}
+                  </td>
+                  <td>
+                    {a.attributes.evaluation.data?.id? 
+                    <button onClick={() => navigate(`/exercice?pid=${a.id}&cid=${a.attributes.classe.data.id}&uid=${a.attributes.eleve.data?.id}&eid=${a.attributes.evaluation.data?.id}&exo=0&correction`)}>
+                      Correction
+                    </button> : "Pas d'évaluation"}
+                  
                   </td>
                 </tr>
               </tbody>

@@ -7,6 +7,7 @@ export const Exo = ({ exercice : exo }) => {
   const { data: questions, isSuccess: isQuestioning } = useQuery("questions" + exo.id, () =>
     fetch(`http://localhost:1337/api/questions?populate=*&filters[exercice]=`+ exo.id).then((res) => res.json())
   );
+  
 
   return (
     <div className="card bg-light-50">

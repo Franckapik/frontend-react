@@ -52,8 +52,11 @@ button:focus {
 }
 
 .is-selected {
-  background-color: rgb(95, 236, 142)!important;
+  background-color: rgb(227, 222, 98)!important;
 
+}
+.is-correct {
+  border: solid 5px rgb(74, 219, 71)!important;
 }
 
 .cursor {

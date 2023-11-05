@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import * as apiFetch from "../api/fetch.js";
 import moment from "moment";
-import { useSearchParams } from "react-router-dom";
-import { useQuery } from "react-query";
 import "moment/dist/locale/fr";
+import React from "react";
+import { useQuery } from "react-query";
+import { useSearchParams } from "react-router-dom";
 moment().locale("fr");
 
 export const Progression = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pid = sessionStorage.getItem("sessionPid") || searchParams.get("pid") || 0;
+  const correction = searchParams.get("correction");
 
   const {
     isLoading,
@@ -69,8 +69,8 @@ export const Progression = () => {
             </tbody>
             <tbody>
               <tr>
-                <td colSpan="3" className="is-size-4 has-text-centered has-background-info">
-                  Evaluation :{" "}
+                <td colSpan="3" className={`is-size-4 has-text-centered ${correction !== null ? "has-background-primary" :   "has-background-info"}`}>
+                 {correction !== null ? "Correction : " :  "Evaluation : "}
                   {progression.data[0].attributes.evaluation?.data
                     ? progression.data[0].attributes.evaluation.data.attributes.Nom
                     : "Pas d'evaluation"}
