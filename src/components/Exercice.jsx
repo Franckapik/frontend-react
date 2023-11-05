@@ -17,6 +17,7 @@ const Exercice = () => {
 
 
   const [pointsEva, setPointsEva] = useState([]);
+  const [compsEva, setCompsEva] = useState([]);
 
   const navigate = useNavigate();
 
@@ -47,6 +48,13 @@ const Exercice = () => {
     }
   }, [pointsEva, correction])
 
+  useEffect(() => {
+    if(correction === null) {
+      /* const note = Object.values(pointsEva).reduce((acc, val) => acc += val, 0)
+      changeNote(note) */
+    }
+  }, [compsEva, correction])
+
   return (
     <div>
       {papier !== null && (
@@ -63,7 +71,7 @@ const Exercice = () => {
         {isSuccess &&
           exercices.data
             .filter((a, i) => (exo !== null ? i == exo : true))
-            .map((exercice) => <Exo exercice={exercice} setPointsEva={setPointsEva} />)}
+            .map((exercice) => <Exo exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />)}
         {isSuccess && exo && (
           <div>
             {exo < exercices.data.length - 1 ? (

@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import { Question } from "./Question.jsx";
 import { useSearchParams } from "react-router-dom";
 
-export const Exo = ({ exercice: exo, setPointsEva }) => {
+export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const papier = searchParams.get("papier");
@@ -27,6 +27,27 @@ export const Exo = ({ exercice: exo, setPointsEva }) => {
     {
       onSuccess: (completions) => {
         const pointsExo = completions.data?.reduce((acc, val) => (acc += val.attributes.points), 0);
+      /*   const essai = completion.data?.reduce((acc,val) => {
+          const obj = {}
+          obj[val.attributes.validation[0]?.competence.data?.id] = val.attributes.validation[0]?.niveau
+          console.log(obj);
+          let moy = 
+          acc = {...acc, ...obj}
+          return acc
+       
+        }, {}
+        )
+ */
+      /*   const essai = completion.data.map((a) => {
+          const validation = a.attributes.validation[0]
+          const compId = a.attributes.validation[0].competence.data?.id
+          return {exo : exo.id, competence : compId, niveau : validation.niveau}
+        })
+        const essai2 = essai.reduce((acc, val) => (
+          acc = val.niveau / 2
+        ), {})
+        setCompsEva((prev) => ({ ...prev, ...essai })); */
+
         setPointsExo(pointsExo);
         const pts = {};
         pts["exo" + exo.id] = pointsExo;
@@ -34,6 +55,7 @@ export const Exo = ({ exercice: exo, setPointsEva }) => {
       },
     }
   );
+  
 
   return (
     <div className="card bg-light-50">

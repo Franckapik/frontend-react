@@ -109,7 +109,7 @@ export const Question = ({ question, exo, index }) => {
                       rid: reponse.id,
                       score: reponse.attributes.correct ? question.attributes.score : 0,
                       comp: question.attributes.competence.data.id,
-                      niveau: reponse.attributes.correct ? "4" : "1",
+                      niveau: reponse.attributes.correct ? 4 : 1,
                     })
                   }
                 >
