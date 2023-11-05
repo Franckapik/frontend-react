@@ -9,6 +9,8 @@ export const Exo = ({ exercice: exo, setPointsEva }) => {
 
   const papier = searchParams.get("papier");
   const pid = searchParams.get("pid");
+  const correction = searchParams.get("correction");
+
 
   const [pointsExo, setPointsExo] = useState(0);
 
@@ -37,7 +39,7 @@ export const Exo = ({ exercice: exo, setPointsEva }) => {
     <div className="card bg-light-50">
       <div className="card-content">
         <div className={papier !== null ? `is-underlined` : ``}>
-          Exercice {exo.attributes.numero} : {exo.attributes.titre} {pointsExo} / {exo.attributes.score}
+          Exercice {exo.attributes.numero} : {exo.attributes.titre} {correction !== null ? pointsExo : ""} / {exo.attributes.score}
         </div>
         <div className="content">
           <div>

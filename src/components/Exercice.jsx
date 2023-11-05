@@ -13,6 +13,8 @@ const Exercice = () => {
   const pid = searchParams.get("pid");
   const papier = searchParams.get("papier");
   const queryClient = useQueryClient();
+  const correction = searchParams.get("correction");
+
 
   const [pointsEva, setPointsEva] = useState([]);
 
@@ -32,8 +34,6 @@ const Exercice = () => {
   );
 
   const {
-    isLoading,
-    error,
     data: exercices,
     isSuccess,
   } = useQuery("exercices", () =>
@@ -41,9 +41,11 @@ const Exercice = () => {
   );
 
   useEffect(() => {
-    const note = Object.values(pointsEva).reduce((acc, val) => acc += val, 0)
-    changeNote(note)
-  }, [pointsEva])
+    if(correction === null) {
+      const note = Object.values(pointsEva).reduce((acc, val) => acc += val, 0)
+      changeNote(note)
+    }
+  }, [pointsEva, correction])
 
   return (
     <div>

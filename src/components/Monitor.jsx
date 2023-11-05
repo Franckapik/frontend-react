@@ -73,7 +73,7 @@ export const Monitor = () => {
                   <td>{a.attributes.completions.data?.length}</td>
                   <td>
                     {" "}
-                    {a.attributes.completions.data?.reduce((acc, prev) => (acc += prev.attributes?.points), 0)} pts
+                    {a.attributes.points} pt(s)
                   </td>
                   <td>{moment(a.attributes.creation).fromNow()}</td>
                   <td>
@@ -85,9 +85,9 @@ export const Monitor = () => {
                   </td>
                   <td>
                     {a.attributes.evaluation.data?.id? 
-                    <button onClick={() => navigate(`/exercice?pid=${a.id}&cid=${a.attributes.classe.data.id}&uid=${a.attributes.eleve.data?.id}&eid=${a.attributes.evaluation.data?.id}&exo=0&correction`)}>
+                    <a target="_blank" href= {`/exercice?pid=${a.id}&cid=${a.attributes.classe.data.id}&uid=${a.attributes.eleve.data?.id}&eid=${a.attributes.evaluation.data?.id}&correction`}>
                       Correction
-                    </button> : "Pas d'évaluation"}
+                    </a> : "Pas d'évaluation"}
                   
                   </td>
                 </tr>

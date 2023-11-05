@@ -61,7 +61,7 @@ export const Question = ({ question, exo, index }) => {
     },
     {
       onSuccess: () => {
-        queryClient.invalidateQueries([ "completions" + "E" + exo.id + "Q" + index]);
+        queryClient.invalidateQueries(["completions" + "E" + exo.id + "Q" + index]);
       },
     }
   );
@@ -73,7 +73,7 @@ export const Question = ({ question, exo, index }) => {
           <div className={papier !== null ? `has-text-weight-bold  pb-4` : `box has-text-weight-semibold`}>
             {papier !== null ? "► " : ""} Question {index} : [{question.attributes.type}] - Niveau{" "}
             {question.attributes.niveau} - {question.attributes.contenu}
-            {correction !== null && completion.data[0]?.attributes.points + "/" + question.attributes.score}
+            {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
           </div>
           <div className={papier !== null ? `` : `is-flex is-flex-wrap-wrap`}>
             {question.attributes.reponses.data.map((reponse, i) => {
