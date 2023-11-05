@@ -1,5 +1,8 @@
 Classe => Eleve => Evaluation => Exercices
 
+{papier!== null ? ``  : ``}
+
+
 CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
 
 Bien controller que les eva id sont bie  pris en compte dans la prgression

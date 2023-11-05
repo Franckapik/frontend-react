@@ -8,6 +8,7 @@ const Exercice = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const exo = searchParams.get("exo");
   const eid = searchParams.get("eid");
+  const papier = searchParams.get("papier");
 
   const navigate = useNavigate();
 
@@ -22,20 +23,32 @@ const Exercice = () => {
 
   return (
     <div>
-      {isSuccess && (
+     {papier !== null && <div className="printbutton has-text-centered m-3">
+        <button onClick={() => window.print()}>Imprimer</button>
+
+        <style>{`@media print {.printbutton{display: none;}}`}</style>
+      </div>}
+      {isSuccess && exo && (
         <Breadcrumb exercices={exercices} setSearchParams={setSearchParams} searchParams={searchParams} exo={exo} />
       )}
-      <div className="is-size-4">
-        {isSuccess && exercices.data.filter((a,i) => i == exo).map((exercice) => <Exo exercice={exercice} />)}
+      <div className={papier !== null ? `is-size-4` : `has-text-centered is-size-4`}>
+        {isSuccess &&
+          exercices.data
+            .filter((a, i) => (exo !== null ? i == exo : true))
+            .map((exercice) => <Exo exercice={exercice} />)}
         {isSuccess && exo && (
           <div>
             {exo < exercices.data.length - 1 ? (
-              <button onClick={() =>
-                setSearchParams((searchParams) => {
-                  searchParams.set("exo", Number(exo + 1));
-                  return searchParams;
-                })
-              } >Suivant</button>
+              <button
+                onClick={() =>
+                  setSearchParams((searchParams) => {
+                    searchParams.set("exo", Number(exo + 1));
+                    return searchParams;
+                  })
+                }
+              >
+                Suivant
+              </button>
             ) : (
               "Retour"
             )}

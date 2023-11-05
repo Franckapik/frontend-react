@@ -7,10 +7,11 @@ export const Question = ({ question }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pid = searchParams.get("pid");
   const correction = searchParams.get("correction");
+  const papier = searchParams.get("papier");
 
   const queryClient = useQueryClient();
 
-  const { isSuccess : isSuccessCompletion, data: completion } = useQuery(
+  const { isSuccess: isSuccessCompletion, data: completion } = useQuery(
     "completions",
     () =>
       fetch(
@@ -34,9 +35,9 @@ export const Question = ({ question }) => {
         question: {
           id: question.id,
         },
-        exercice : {
-          id : question.attributes.exercice.data.id
-        }
+        exercice: {
+          id: question.attributes.exercice.data.id,
+        },
       });
     },
     {
@@ -67,29 +68,45 @@ export const Question = ({ question }) => {
 
   return (
     <>
-      {isSuccessCompletion && completion.data.length && <><div className=" box has-text-weight-semibold">
-        Question : [{question.attributes.type}] - Niveau {question.attributes.niveau} - {question.attributes.contenu} -
-        [{completion && completion.data[0]?.id}]   {correction !== null && completion.data[0]?.attributes.points + "/" + question.attributes.score} 
-      </div>
-      <div className="buttons is-flex is-flex-wrap-wrap">
-        {question.attributes.reponses.data.map((reponse, i) => {
-          return (
-            <button
-              key={"reponse" + i}
-              className={`button is-primary is-info is-flex-basis50 reponse is-size-4 m-3 ${
-                completion && completion.data[0].attributes.reponse.data?.id == reponse.id ? "is-selected" : ""
-              } ${
-                correction !== null && reponse.attributes.correct ? "is-correct" : ""
-              } `}
-              onClick={() =>
-                correction === null && hasAnswer({ rid: reponse.id, score: reponse.attributes.correct ? question.attributes.score : 0 })
-              }
-            >
-              {reponse.attributes.type} {reponse.attributes.contenu}
-            </button>
-          );
-        })}
-      </div></>}
+      {isSuccessCompletion && completion.data.length && (
+        <>
+          <div className={papier!== null ? `has-text-weight-bold  pb-4`  : `box has-text-weight-semibold`} >
+          {papier !== null ?"► ": ""}  Question : [{question.attributes.type}] - Niveau {question.attributes.niveau} -{" "}
+            {question.attributes.contenu} 
+            {correction !== null && completion.data[0]?.attributes.points + "/" + question.attributes.score}
+          </div>
+          <div className={papier !== null ? `` : `is-flex is-flex-wrap-wrap`}>
+            {question.attributes.reponses.data.map((reponse, i) => {
+              return (
+                <div
+                  key={"reponse" + i}
+                  className={
+                    papier !== null
+                      ? `p-1`
+                      : `button is-primary is-info is-flex-basis50 reponse is-size-4 m-3 ${
+                          completion && completion.data[0].attributes.reponse.data?.id == reponse.id
+                            ? "is-selected"
+                            : ""
+                        } ${correction !== null && reponse.attributes.correct ? "is-correct" : ""} `
+                  }
+                  onClick={() =>
+                    correction === null &&
+                    hasAnswer({ rid: reponse.id, score: reponse.attributes.correct ? question.attributes.score : 0 })
+                  }
+                >
+               {papier !== null ?" □ ": ""}  {reponse.attributes.type} {reponse.attributes.contenu}
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </>
   );
 };
+/* 
+{`button is-primary is-info is-flex-basis50 reponse is-size-4 m-3 ${
+  completion && completion.data[0].attributes.reponse.data?.id == reponse.id ? "is-selected" : ""
+} ${
+  correction !== null && reponse.attributes.correct ? "is-correct" : ""
+} `} */
