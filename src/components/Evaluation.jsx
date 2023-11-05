@@ -18,7 +18,7 @@ const Evaluation = () => {
     data: evaluations,
     isSuccess,
   } = useQuery("evaluations", () =>
-    fetch(`http://localhost:1337/api/evaluations?populate=*&filters[classe]=${cid}`).then((res) => res.json())
+    fetch(`http://localhost:1337/api/evaluations?populate=*&filters[classes]=${cid}`).then((res) => res.json())
   );
 
   const { isLoading: isUpdating, mutate } = useMutation(
@@ -45,9 +45,9 @@ const Evaluation = () => {
       <div>
         {isSuccess && (
           <div>
-            {evaluations.data.length > 0 ? (
+            {evaluations.data?.length > 0 ? (
               <div>
-                {evaluations.data.map((eva, i) => (
+                {evaluations.data?.map((eva, i) => (
                   <div key={"eva" + eva.id} onClick={() => mutate(eva.id)} className="box ">
                    Evaluation n° {i+1} - {eva.attributes.Nom}
                   </div>
