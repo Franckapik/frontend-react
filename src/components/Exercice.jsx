@@ -67,7 +67,7 @@ const Exercice = () => {
       {isSuccess && exo && (
         <Breadcrumb exercices={exercices} setSearchParams={setSearchParams} searchParams={searchParams} exo={exo} />
       )}
-      <div className={papier !== null ? `is-size-4` : `has-text-centered is-size-4`}>
+      <div className={papier !== null ? `is-size-6` : `has-text-centered is-size-4`}>
         {isSuccess &&
           exercices.data
             .filter((a, i) => (exo !== null ? i == exo : true))

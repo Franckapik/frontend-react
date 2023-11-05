@@ -77,12 +77,12 @@ export const Question = ({ question, exo, index }) => {
     <>
       {isSuccessCompletion && completion.data.length && (
         <>
-          <div className={papier !== null ? `has-text-weight-bold  pb-4` : `box has-text-weight-semibold`}>
-            {papier !== null ? "► " : ""} Question {index} : [{question.attributes.type}] - Niveau{" "}
-            {question.attributes.niveau} - {question.attributes.contenu}
-            {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
-            <div>
-              {correction !== null && completion.data[0]?.attributes.validation.length
+          <div className={papier !== null ? `has-text-weight-semibold  pb-4` : `box has-text-weight-semibold`}>
+            {papier !== null ? "► " : ""} Question {index} {/* [ niveau 
+             {question.attributes.niveau} ] */} : {question.attributes.contenu} ({question.attributes.type})
+            <span className="has-text-right">{correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}</span>
+            <div className="is-size-6">
+              Compétence : {correction !== null && completion.data[0]?.attributes.validation.length
                 ? completion.data[0]?.attributes.validation[0]?.competence.data?.attributes.Nom +
                   ":" +
                   completion.data[0]?.attributes.validation[0]?.niveau

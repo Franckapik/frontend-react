@@ -58,7 +58,7 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
   
 
   return (
-    <div className="card bg-light-50">
+    <div className="card m-3 has-background-light is-shadowless">
       <div className="card-content">
         <div className={papier !== null ? `is-underlined` : ``}>
           Exercice {exo.attributes.numero} : {exo.attributes.titre} {correction !== null ? pointsExo : ""} / {exo.attributes.score}
