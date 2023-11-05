@@ -4,11 +4,11 @@ import { useQuery } from "react-query";
 import { Question } from "./Question.jsx";
 import { useSearchParams } from "react-router-dom";
 
-export const Exo = ({ exercice : exo }) => {
+export const Exo = ({ exercice: exo }) => {
   const { data: questions, isSuccess: isQuestioning } = useQuery("questions" + exo.id, () =>
-    fetch(`http://localhost:1337/api/questions?populate=*&filters[exercice]=`+ exo.id).then((res) => res.json())
+    fetch(`http://localhost:1337/api/questions?populate=*&filters[exercice]=` + exo.id).then((res) => res.json())
   );
-  
+
   const [searchParams, setSearchParams] = useSearchParams();
 
   const papier = searchParams.get("papier");
@@ -16,15 +16,14 @@ export const Exo = ({ exercice : exo }) => {
   return (
     <div className="card bg-light-50">
       <div className="card-content">
-        <div className={papier!== null ? `is-underlined`  : ``}
->
+        <div className={papier !== null ? `is-underlined` : ``}>
           Exercice {exo.attributes.numero} : {exo.attributes.titre}
         </div>
         <div className="content">
           <div>
             <ReactMarkdown>{exo.attributes.contenu}</ReactMarkdown>
             {isQuestioning && questions.data.length > 0
-              ? questions.data.map((question, i) => <Question question={question} index={i} />)
+              ? questions.data.map((question, i) => <Question question={question} exo={exo} index={i + 1} />)
               : "Pas de questions"}
           </div>
         </div>
