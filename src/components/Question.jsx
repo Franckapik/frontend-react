@@ -77,19 +77,28 @@ export const Question = ({ question, exo, index }) => {
     <>
       {isSuccessCompletion && completion.data.length && (
         <>
-          <div className={papier !== null ? `has-text-weight-semibold  pb-4` : `box has-text-weight-semibold`}>
-            {papier !== null ? "► " : ""} Question {index} {/* [ niveau 
-             {question.attributes.niveau} ] */} : {question.attributes.contenu} ({question.attributes.type})
-            <span className="has-text-right">{correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}</span>
-            <div className="is-size-6">
-              Compétence : {correction !== null && completion.data[0]?.attributes.validation.length
+          <div
+            className={
+              papier !== null
+                ? `has-text-weight-semibold mt-3 mb-3 is-flex is-justify-content-space-between`
+                : `box has-text-weight-semibold`
+            }
+          >
+            {papier !== null ? "► " : ""} Q{index}{" "}
+            {/* [ niveau 
+             {question.attributes.niveau} ] */}{" "}
+            : {question.attributes.contenu} ({question.attributes.type})
+            {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
+            <div className="is-size-7 mr-5">
+              Compétence :{" "}
+              {correction !== null && completion.data[0]?.attributes.validation.length
                 ? completion.data[0]?.attributes.validation[0]?.competence.data?.attributes.Nom +
                   ":" +
                   completion.data[0]?.attributes.validation[0]?.niveau
                 : question.attributes.competence.data?.attributes.Nom}
             </div>
           </div>
-          <div className={papier !== null ? `` : `is-flex is-flex-wrap-wrap`}>
+          <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
             {question.attributes.reponses.data.map((reponse, i) => {
               return (
                 <div
@@ -97,7 +106,7 @@ export const Question = ({ question, exo, index }) => {
                   className={
                     papier !== null
                       ? `p-1`
-                      : `button is-primary is-info is-flex-basis50 reponse is-size-4 m-3 ${
+                      : `button is-primary is-info is-flex-basis50 reponse is-size-5 m-3 ${
                           completion && completion.data[0].attributes.reponse.data?.id == reponse.id
                             ? "is-selected"
                             : ""

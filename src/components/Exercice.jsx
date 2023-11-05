@@ -71,7 +71,7 @@ const Exercice = () => {
         {isSuccess &&
           exercices.data
             .filter((a, i) => (exo !== null ? i == exo : true))
-            .map((exercice) => <Exo exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />)}
+            .map((exercice,i) => <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />)}
         {isSuccess && exo && (
           <div>
             {exo < exercices.data.length - 1 ? (

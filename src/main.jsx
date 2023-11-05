@@ -24,7 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/exercice" element={<Layout title={"Exercice"}><Exercice /></Layout>} />
         <Route path="/monitor" element={<Monitor />} />
       </Routes>
-      <ReactQueryDevtools initialIsOpen={false} />
-    </BrowserRouter></QueryClientProvider>
+{/*       <ReactQueryDevtools initialIsOpen={false} />
+ */}    </BrowserRouter></QueryClientProvider>
   </React.StrictMode>
 );

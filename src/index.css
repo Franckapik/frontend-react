@@ -42,6 +42,10 @@ body {
 
 }
 
+.button {
+  white-space: normal;
+}
+
 button:focus {
   border-color: brown;
 }
