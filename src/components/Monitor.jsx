@@ -7,7 +7,7 @@ moment().locale("fr");
 
 const MonitComp = ({ id, table, att }) => {
   const { isSuccess: isSuccess, data } = useQuery(table + id, () =>
-    fetch(`http://strapi.eva-svt.ovh/api/${table}/${id}?populate=*`).then((res) => res.json())
+    fetch(`https://strapi.eva-svt.ovh/api/${table}/${id}?populate=*`).then((res) => res.json())
   );
   return <>{isSuccess && data && <div className="box">{data.data?.attributes[att]}</div>}</>;
 };
@@ -23,11 +23,11 @@ export const Monitor = () => {
     error,
     data: progressions,
   } = useQuery("progressions", () =>
-    fetch("http://strapi.eva-svt.ovh/api/progressions?populate=*").then((res) => res.json())
+    fetch("https://strapi.eva-svt.ovh/api/progressions?populate=*").then((res) => res.json())
   );
 
   const { data: completions } = useQuery("completions", () =>
-    fetch("http://strapi.eva-svt.ovh/api/completions?populate=deep").then((res) => res.json())
+    fetch("https://strapi.eva-svt.ovh/api/completions?populate=deep").then((res) => res.json())
   );
 
   {

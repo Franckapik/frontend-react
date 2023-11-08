@@ -18,7 +18,7 @@ const Evaluation = () => {
     data: evaluations,
     isSuccess,
   } = useQuery("evaluations", () =>
-    fetch(`http://strapi.eva-svt.ovh/api/evaluations?populate=*&filters[classes]=${cid}`).then((res) => res.json())
+    fetch(`https://strapi.eva-svt.ovh/api/evaluations?populate=*&filters[classes]=${cid}`).then((res) => res.json())
   );
 
   const { isLoading: isUpdating, mutate } = useMutation(

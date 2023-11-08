@@ -38,7 +38,7 @@ const Exercice = () => {
     data: exercices,
     isSuccess,
   } = useQuery("exercices", () =>
-    fetch(`http://strapi.eva-svt.ovh/api/exercices?populate=*&filters[evaluation]=${eid}`).then((res) => res.json())
+    fetch(`https://strapi.eva-svt.ovh/api/exercices?populate=*&filters[evaluation]=${eid}`).then((res) => res.json())
   );
 
   useEffect(() => {

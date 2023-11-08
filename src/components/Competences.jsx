@@ -8,7 +8,7 @@ export const Competences = ({id, niveau}) => {
   const {
     isSuccess: isSuccessCompetence,
     data: competence,
-  } = useQuery("competence" + id, () => fetch(`http://strapi.eva-svt.ovh/api/competences/${id}?populate=*`).then((res) => res.json()));
+  } = useQuery("competence" + id, () => fetch(`https://strapi.eva-svt.ovh/api/competences/${id}?populate=*`).then((res) => res.json()));
 console.log(competence);
   return (
     <>    

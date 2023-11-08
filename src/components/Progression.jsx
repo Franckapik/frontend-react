@@ -17,7 +17,7 @@ export const Progression = () => {
     data: progression,
     isSuccess,
   } = useQuery("progression", () =>
-    fetch(`http://strapi.eva-svt.ovh/api/progressions?populate=*&filters[id]=${pid}`).then((res) => res.json())
+    fetch(`https://strapi.eva-svt.ovh/api/progressions?populate=*&filters[id]=${pid}`).then((res) => res.json())
   );
 
   return (

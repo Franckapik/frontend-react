@@ -16,7 +16,7 @@ const Classe = () => {
   const {
     isSuccess: isSuccessClasse,
     data: classes,
-  } = useQuery("classes", () => fetch("http://strapi.eva-svt.ovh/api/classes?populate=*").then((res) => res.json()));
+  } = useQuery("classes", () => fetch("https://strapi.eva-svt.ovh/api/classes?populate=*").then((res) => res.json()));
 
   const {
     mutate: changeProgression,
