@@ -16,7 +16,7 @@ export const Question = ({ question, exo, index }) => {
     "completions" + "E" + exo.id + "Q" + index,
     () =>
       fetch(
-        `http://localhost:1337/api/completions?populate=deep&filters[progression]=${pid}&filters[question]=${question.id}`
+        `http://strapi.eva-svt.ovh/api/completions?populate=deep&filters[progression]=${pid}&filters[question]=${question.id}`
       ).then((res) => res.json()),
     {
       onSuccess: (completion) => {

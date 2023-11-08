@@ -15,14 +15,14 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
   const [pointsExo, setPointsExo] = useState(0);
 
   const { data: questions, isSuccess: isQuestioning } = useQuery("questions" + exo.id, () =>
-    fetch(`http://localhost:1337/api/questions?populate=*&filters[exercice]=` + exo.id).then((res) => res.json())
+    fetch(`http://strapi.eva-svt.ovh/api/questions?populate=*&filters[exercice]=` + exo.id).then((res) => res.json())
   );
 
   const { data: completion } = useQuery(
     "completions" + "E" + exo.id,
     () =>
       fetch(
-        `http://localhost:1337/api/completions?populate=deep&filters[progression]=${pid}&filters[exercice]=${exo.id}`
+        `http://strapi.eva-svt.ovh/api/completions?populate=deep&filters[progression]=${pid}&filters[exercice]=${exo.id}`
       ).then((res) => res.json()),
     {
       onSuccess: (completions) => {

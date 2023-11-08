@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const postProgression = (data) =>
   axios
-    .post(`http://localhost:1337/api/progressions`, {
+    .post(`http://strapi.eva-svt.ovh/api/progressions`, {
       data: data,
     })
     .then((response) => {
@@ -16,7 +16,7 @@ export const postProgression = (data) =>
 
 export const updateProgression = (data, id) =>
   axios
-    .put(`http://localhost:1337/api/progressions/${id}?populate=*`, {
+    .put(`http://strapi.eva-svt.ovh/api/progressions/${id}?populate=*`, {
       data: data,
     })
     .then((response) => {
@@ -30,7 +30,7 @@ export const updateProgression = (data, id) =>
 
 export const postCompletion = (data) =>
   axios
-    .post(`http://localhost:1337/api/completions?populate=*`, {
+    .post(`http://strapi.eva-svt.ovh/api/completions?populate=*`, {
       data: data,
     })
     .then((response) => {
@@ -44,7 +44,7 @@ export const postCompletion = (data) =>
 
 export const updateCompletion = (data, id) =>
   axios
-    .put(`http://localhost:1337/api/completions/${id}?populate=*`, {
+    .put(`http://strapi.eva-svt.ovh/api/completions/${id}?populate=*`, {
       data: data,
     })
     .then((response) => {
