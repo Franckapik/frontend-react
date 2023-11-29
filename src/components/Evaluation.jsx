@@ -48,8 +48,10 @@ const Evaluation = () => {
             {evaluations.data?.length > 0 ? (
               <div>
                 {evaluations.data?.map((eva, i) => (
-                  <div key={"eva" + eva.id} onClick={() => mutate(eva.id)} className="box ">
-                   Evaluation n° {i+1} - {eva.attributes.Nom}
+                  <div key={"eva" + eva.id} onClick={() => mutate(eva.id)} className="box box_eva has-text-centered">
+                   <p className="is-size-4  is-underlined p-4">Evaluation n° {i+1}</p>
+                   <p className="is-size-5 ">{eva.attributes.Nom}</p>
+                   <button className="button is-size-5 mt-5">Commencer</button>
                   </div>
                 ))}
               </div>

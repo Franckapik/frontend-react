@@ -10,7 +10,8 @@ export const Progression = () => {
   const pid = sessionStorage.getItem("sessionPid") || searchParams.get("pid") || 0;
   const correction = searchParams.get("correction");
   const papier = searchParams.get("papier");
-  const uid = searchParams.get("uid")
+  const eid = searchParams.get("eid");
+
 
   const {
     isLoading,
@@ -70,7 +71,7 @@ export const Progression = () => {
                 </th>
               </tr>
             </thead>
-            {uid && progression.data[0].attributes.evaluation?.data
+            {eid && progression.data[0].attributes.evaluation?.data
               ? <tbody>
                 <tr>
                   <td

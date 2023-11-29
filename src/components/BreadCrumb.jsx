@@ -9,11 +9,10 @@ export const Breadcrumb = ({exercices, setSearchParams, searchParams, exo}) => {
         <nav className="breadcrumb has-arrow-separator m-2" aria-label="breadcrumbs">
           <ul>
             <li>
-              <a href={`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}&eid=${eid}`} className="p-2">
+              <a href={`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}`} className="p-2">
                 Evaluation
               </a>
             </li>
-
             {exercices.data.map((exercice, i) => {
                 return (
                   <li key={"breadcrumb_exo" + i} className={i === Number(exo) ? "is-active" : ""}>
