@@ -42,21 +42,21 @@ const Exercice = () => {
   );
 
   useEffect(() => {
-    if(correction === null) {
+    if (correction === null) {
       const note = Object.values(pointsEva).reduce((acc, val) => acc += val, 0)
       changeNote(note)
     }
   }, [pointsEva, correction])
 
   useEffect(() => {
-    if(correction === null) {
+    if (correction === null) {
       /* const note = Object.values(pointsEva).reduce((acc, val) => acc += val, 0)
       changeNote(note) */
     }
   }, [compsEva, correction])
 
   return (
-    <div>
+    <div >
       {papier !== null && (
         <div className="printbutton has-text-centered m-3">
           <button onClick={() => window.print()}>Imprimer</button>
@@ -64,14 +64,12 @@ const Exercice = () => {
           <style>{`@media print {.printbutton{display: none;}}`}</style>
         </div>
       )}
-      {isSuccess && exo && (
-        <Breadcrumb exercices={exercices} setSearchParams={setSearchParams} searchParams={searchParams} exo={exo} />
-      )}
+
       <div className={papier !== null ? `is-size-6` : `has-text-centered is-size-4`}>
         {isSuccess &&
           exercices.data
             .filter((a, i) => (exo !== null ? i == exo : true))
-            .map((exercice,i) => <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />)}
+            .map((exercice, i) => <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />)}
         {isSuccess && exo && (
           <div>
             {exo < exercices.data.length - 1 ? (

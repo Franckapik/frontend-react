@@ -1,4 +1,12 @@
-Classe => Eleve => Evaluation => Exercices
+Renommer les fichiers Evaluations et Exercices (et Exo) en qqchose de plus significatif
+
+
+Des icones à la place de NOM/PRENOM ? 
+
+Replacer le button suivant pour les exercices. (précédents ? )
+
+Style changeant sur les cases a cocher (type de suestion)
+
 
 {papier!== null ? ``  : ``}
 

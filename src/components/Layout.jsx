@@ -6,7 +6,7 @@ export default function Layout({ children }) {
       <header>
         <Progression ></Progression>
       </header>
-      <main className=" m-auto p-3 ">{children}</main>
+      <main className="m-auto header_blank ">{children}</main>
     </div>
   )
 }

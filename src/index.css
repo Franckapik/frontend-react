@@ -42,6 +42,16 @@ body {
   outline-offset: -15px;
 }
 
+.exit_eva_btn {
+  position : absolute;
+  right : 5vw
+
+}
+
+a {
+  color: inherit!important;
+}
+
 .bg-light-50 {
   background-color: rgba(255, 255, 255, 0.671);
 }
@@ -64,7 +74,7 @@ button:focus {
   border-color: brown;
 }
 
-.is-active {
+.is-active button {
   font-weight: bold!important;
   background-color: beige!important;
 }
@@ -75,6 +85,17 @@ button:focus {
 }
 .is-correct {
   border: solid 5px rgb(74, 219, 71)!important;
+}
+
+.position-fixed {
+  width: 100vw;
+  position: fixed;
+  z-index: 1;
+  background-color: white;
+}
+
+.header_blank {
+  padding-top: 200px;
 }
 
 .cursor {

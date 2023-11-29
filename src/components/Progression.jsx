@@ -3,6 +3,7 @@ import "moment/dist/locale/fr";
 import React from "react";
 import { useQuery } from "react-query";
 import { useSearchParams } from "react-router-dom";
+import { Breadcrumb } from "./BreadCrumb";
 moment().locale("fr");
 
 export const Progression = () => {
@@ -11,7 +12,7 @@ export const Progression = () => {
   const correction = searchParams.get("correction");
   const papier = searchParams.get("papier");
   const eid = searchParams.get("eid");
-
+  const exo = searchParams.get("exo");
 
   const {
     isLoading,
@@ -23,7 +24,7 @@ export const Progression = () => {
   );
 
   return (
-    <>
+    <div>
       {isSuccess && progression.data.length ? (
         <>
           {papier === null && (
@@ -48,49 +49,68 @@ export const Progression = () => {
               </div>
             </div>
           )}
-          <table className="table is-striped is-fullwidth">
+          <table className="table is-striped is-fullwidth position-fixed">
             <thead>
               <tr>
                 <th>
                   NOM/PRENOM :{" "}
-                  {papier === null &&
-                    progression.data[0]?.attributes.eleve?.data != null &&
-                    <div className="tag is-medium ">{progression.data[0].attributes.eleve.data.attributes.Nom} </div>}
+                  {papier === null && progression.data[0]?.attributes.eleve?.data != null && (
+                    <div className="tag is-medium ">{progression.data[0].attributes.eleve.data.attributes.Nom} </div>
+                  )}
                 </th>
                 <th>
                   CLASSE :{" "}
-                  {papier === null &&
-                    progression.data[0]?.attributes.classe?.data != null &&
-                    <div className="tag is-medium"> {progression.data[0].attributes.classe.data.attributes.Classe}</div>}{" "}
+                  {papier === null && progression.data[0]?.attributes.classe?.data != null && (
+                    <div className="tag is-medium"> {progression.data[0].attributes.classe.data.attributes.Classe}</div>
+                  )}{" "}
                 </th>
                 <th>
                   {papier === null && correction !== null ? "NOTE : " : ""}
 
-                  {papier === null && correction !== null &&
-                    progression.data[0]?.attributes.points + " / " + progression.data[0]?.attributes.evaluation.data?.attributes.score}
+                  {papier === null &&
+                    correction !== null &&
+                    progression.data[0]?.attributes.points +
+                      " / " +
+                      progression.data[0]?.attributes.evaluation.data?.attributes.score}
                 </th>
               </tr>
             </thead>
-            {eid && progression.data[0].attributes.evaluation?.data
-              ? <tbody>
+            {eid && progression.data[0].attributes.evaluation?.data ? (
+              <tbody>
                 <tr>
                   <td
                     colSpan="3"
-                    className={`is-size-4 has-text-centered ${correction !== null ? "has-background-primary" : papier !== null ? "" : "has-background-info"
-                      }`}
+                    className={`is-size-4 has-text-centered  ${
+                      correction !== null
+                        ? "has-background-primary"
+                        : papier !== null
+                        ? ""
+                        : "has-background-info-light"
+                    }`}
                   >
-
-                    {correction !== null ? "Correction : " : "Evaluation : "}  {progression.data[0].attributes.evaluation.data.attributes.Nom}
-
-                  </td>
+                    <i className="fa-solid fa-clipboard-question "></i>{" "}
+                   <span className="ml-4">{progression.data[0].attributes.evaluation.data.attributes.Nom}
+                  </span> </td>
                 </tr>
-              </tbody> : ""}
+              </tbody>
+            ) : (
+              ""
+            )}
+            <tbody>
+              <tr>
+                <td colSpan="3">{exo && <Breadcrumb />}</td>
+              </tr>
+            </tbody>
           </table>
+          {/*           { exo && 
+        <Breadcrumb />
+      } */}
         </>
       ) : (
         <div className="has-text-centered box m-2 is-size-4 is-outlined ">
-          Bienvenue sur le site d'évaluation des SVT</div>
+          Bienvenue sur le site d'évaluation des SVT
+        </div>
       )}
-    </>
+    </div>
   );
 };
