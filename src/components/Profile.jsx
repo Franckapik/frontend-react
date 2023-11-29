@@ -4,13 +4,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
-const Classe = () => {
+const Profile = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cid, setClasseId] = useState();
   const [uid, setEleveId] = useState();
   const sessionPid = sessionStorage.getItem("sessionPid");
   const queryClient = useQueryClient();
-  const navigate= useNavigate()
+  const navigate = useNavigate()
 
 
   const {
@@ -67,21 +67,18 @@ const Classe = () => {
   );
 
   return (
-    <div>
-      <div>
-        <p className="title m-3">Dans quelle classe est-tu ? </p>
-      </div>
+    <div className="m-2 p-5 has-text-centered">
       <div>
         {isSuccessClasse && classes.data?.length ? (
           <select
             name="classes"
             id="classes-select"
-            className="select is-large m-5"
+            className="select is-large m-5 w300"
             onChange={(e) => setClasseId(e.target.value)}
             defaultValue={-1}
           >
             <option key={"default select"} value="-1" disabled="disabled">
-              -- classes de Pierre Perrin --
+              -- Dans quelle classe est-tu ? --
             </option>
 
             {classes.data?.map((classe) => (
@@ -94,17 +91,17 @@ const Classe = () => {
           "Chargement"
         )}
       </div>
-      <div>
+      {cid ? <div>
         <div>
           <select
             name="eleve"
             id="eleve-select"
-            className="select is-large m-5"
+            className="select is-large m-5 w300 "
             defaultValue={-1}
             onChange={(e) => setEleveId(e.target.value)}
           >
             <option key={"default select"} value={-1} disabled="disabled">
-              -- selectionne ton prénom --
+              -- Quel est-ton nom ?  --
             </option>
             {cid &&
               classes?.data
@@ -116,10 +113,10 @@ const Classe = () => {
                 ))}
           </select>
         </div>
-      </div>
-      <button onClick={changeProgression}>Evaluation</button>
-    </div>
+      </div> : ""}
+      {cid && uid ? <button className="button  is-medium  is-outlined" onClick={changeProgression}>Evaluation</button>
+        : ""}</div>
   );
 };
 
-export default Classe;
+export default Profile;

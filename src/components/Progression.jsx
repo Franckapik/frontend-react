@@ -10,6 +10,7 @@ export const Progression = () => {
   const pid = sessionStorage.getItem("sessionPid") || searchParams.get("pid") || 0;
   const correction = searchParams.get("correction");
   const papier = searchParams.get("papier");
+  const uid = searchParams.get("uid")
 
   const {
     isLoading,
@@ -53,41 +54,41 @@ export const Progression = () => {
                   NOM/PRENOM :{" "}
                   {papier === null &&
                     progression.data[0]?.attributes.eleve?.data != null &&
-                    progression.data[0].attributes.eleve.data.attributes.Nom}
+                    <div className="tag is-medium ">{progression.data[0].attributes.eleve.data.attributes.Nom} </div>}
                 </th>
                 <th>
                   CLASSE :{" "}
                   {papier === null &&
                     progression.data[0]?.attributes.classe?.data != null &&
-                    progression.data[0].attributes.classe.data.attributes.Classe}{" "}
+                    <div className="tag is-medium"> {progression.data[0].attributes.classe.data.attributes.Classe}</div>}{" "}
                 </th>
-                <th> 
-                  {papier === null && correction !== null ?  "NOTE : " : ""}
-                 
+                <th>
+                  {papier === null && correction !== null ? "NOTE : " : ""}
+
                   {papier === null && correction !== null &&
-                    progression.data[0]?.attributes.points + " / " +  progression.data[0]?.attributes.evaluation.data?.attributes.score }
+                    progression.data[0]?.attributes.points + " / " + progression.data[0]?.attributes.evaluation.data?.attributes.score}
                 </th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td
-                  colSpan="3"
-                  className={`is-size-4 has-text-centered ${
-                    correction !== null ? "has-background-primary" : papier !== null ? "" : "has-background-info"
-                  }`}
-                >
-                  {correction !== null ? "Correction : " : "Evaluation : "}
-                  {progression.data[0].attributes.evaluation?.data
-                    ? progression.data[0].attributes.evaluation.data.attributes.Nom
-                    : "Pas d'evaluation"}
-                </td>
-              </tr>
-            </tbody>
+            {uid && progression.data[0].attributes.evaluation?.data
+              ? <tbody>
+                <tr>
+                  <td
+                    colSpan="3"
+                    className={`is-size-4 has-text-centered ${correction !== null ? "has-background-primary" : papier !== null ? "" : "has-background-info"
+                      }`}
+                  >
+
+                    {correction !== null ? "Correction : " : "Evaluation : "}  {progression.data[0].attributes.evaluation.data.attributes.Nom}
+
+                  </td>
+                </tr>
+              </tbody> : ""}
           </table>
         </>
       ) : (
-        "Pas de progresssion"
+        <div className="has-text-centered box m-2 is-size-4 is-outlined ">
+          Bienvenue sur le site d'évaluation des SVT</div>
       )}
     </>
   );
