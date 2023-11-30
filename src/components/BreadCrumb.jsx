@@ -18,7 +18,7 @@ export const Breadcrumb = () => {
       {isSuccess && (
         <nav className="breadcrumb has-arrow-separator " aria-label="breadcrumbs">
           <button className="button exit_eva_btn is-light has-text-black mt-2">
-            <a href={`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}`} className="p-2">
+            <a href={`/dashboard?pid=${pid}&cid=${cid}&uid=${uid}`} className="p-2">
               <i className="fa-solid fa-circle-xmark"></i> <span className="ml-3">Quitter l'évaluation</span>
             </a>
           </button>

@@ -61,7 +61,7 @@ const Profile = () => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries(["progression"]);
-        navigate(`/evaluation?pid=${searchParams.get("pid")}&cid=${cid}&uid=${uid}`)
+        navigate(`/dashboard?pid=${searchParams.get("pid")}&cid=${cid}&uid=${uid}`)
       },
     }
   );

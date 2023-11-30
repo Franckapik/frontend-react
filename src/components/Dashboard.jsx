@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 
-const Evaluation = () => {
+const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pid = searchParams.get("pid")
   const cid = searchParams.get("cid")
@@ -65,4 +65,4 @@ const Evaluation = () => {
   );
 };
 
-export default Evaluation;
+export default Dashboard;
