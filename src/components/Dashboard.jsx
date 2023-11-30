@@ -35,7 +35,7 @@ const Dashboard = () => {
     {
       onSuccess: (data) => {
         queryClient.invalidateQueries(["progression"]);
-        navigate(`/exercice?pid=${pid}&cid=${cid}&uid=${uid}&eid=${data.data.attributes.evaluation.data.id}&exo=0`);
+        navigate(`/evaluation?pid=${pid}&cid=${cid}&uid=${uid}&eid=${data.data.attributes.evaluation.data.id}&exo=0`);
       },
     }
   );

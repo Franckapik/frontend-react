@@ -98,7 +98,7 @@ export const Monitor = () => {
                     {a.attributes.evaluation.data?.id ? (
                       <a
                         target="_blank"
-                        href={`/exercice?pid=${a.id}&cid=${a.attributes.classe.data.id}&uid=${a.attributes.eleve.data?.id}&eid=${a.attributes.evaluation.data?.id}&correction`}
+                        href={`/evaluation?pid=${a.id}&cid=${a.attributes.classe.data.id}&uid=${a.attributes.eleve.data?.id}&eid=${a.attributes.evaluation.data?.id}&correction`}
                       >
                         Correction
                       </a>

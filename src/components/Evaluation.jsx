@@ -6,7 +6,7 @@ import { Exo } from "./Exo.jsx";
 import * as apiPost from "../api/post.js";
 
 
-const Exercice = () => {
+const Evaluation = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const exo = searchParams.get("exo");
   const eid = searchParams.get("eid");
@@ -93,4 +93,4 @@ const Exercice = () => {
   );
 };
 
-export default Exercice;
+export default Evaluation;
