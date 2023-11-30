@@ -1,6 +1,3 @@
-
-Des icones à la place de NOM/PRENOM ? 
-
 Replacer le button suivant pour les exercices. (précédents ? )
 
 Style changeant sur les cases a cocher (type de suestion)

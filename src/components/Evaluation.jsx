@@ -72,19 +72,35 @@ const Evaluation = () => {
             .map((exercice, i) => <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />)}
         {isSuccess && exo && (
           <div>
-            {exo < exercices.data.length - 1 ? (
+            {exo > 0  ? (
               <button
+              className="button is-medium m-2"
                 onClick={() =>
                   setSearchParams((searchParams) => {
-                    searchParams.set("exo", Number(exo + 1));
+                    searchParams.set("exo", Number(exo) - 1);
                     return searchParams;
                   })
                 }
               >
-                Suivant
+                Exercice précédent
               </button>
             ) : (
-              "Retour"
+              ""
+            )}
+            {exo < exercices.data.length - 1 ? (
+              <button
+              className="button is-medium m-2"
+                onClick={() =>
+                  setSearchParams((searchParams) => {
+                    searchParams.set("exo", Number(exo) + 1);
+                    return searchParams;
+                  })
+                }
+              >
+                Exercice suivant
+              </button>
+            ) : (
+              ""
             )}
           </div>
         )}
