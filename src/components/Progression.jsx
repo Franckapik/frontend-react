@@ -53,13 +53,13 @@ export const Progression = () => {
             <thead>
               <tr>
                 <th>
-                  NOM/PRENOM :{" "}
+                <i className="fa-regular fa-id-badge"></i> NOM/PRENOM :{" "}
                   {papier === null && progression.data[0]?.attributes.eleve?.data != null && (
                     <div className="tag is-medium ">{progression.data[0].attributes.eleve.data.attributes.Nom} </div>
                   )}
                 </th>
                 <th>
-                  CLASSE :{" "}
+                <i className="fa-solid fa-people-roof"></i> CLASSE :{" "}
                   {papier === null && progression.data[0]?.attributes.classe?.data != null && (
                     <div className="tag is-medium"> {progression.data[0].attributes.classe.data.attributes.Classe}</div>
                   )}{" "}

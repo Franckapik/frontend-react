@@ -1,5 +1,3 @@
-Renommer les fichiers Evaluations et Exercices (et Exo) en qqchose de plus significatif
-
 
 Des icones à la place de NOM/PRENOM ? 
 
