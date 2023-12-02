@@ -27,12 +27,9 @@ export const Monitor = () => {
   );
 
   const { data: completions } = useQuery("completions", () =>
-    fetch("https://strapi.eva-svt.ovh/api/completions?populate=deep").then((res) => res.json())
+    fetch("https://strapi.eva-svt.ovh/api/completions?populate=*").then((res) => res.json())
   );
 
-  {
-    console.log(completions);
-  }
 
   return (
     <div>
@@ -79,11 +76,12 @@ export const Monitor = () => {
                   <td>
                     {a.attributes.evaluation.data?.attributes.Nom} [EID {a.attributes.evaluation.data?.id}]
                   </td>
-                  <td >
+                  <td>
                     {a.attributes.completions.data?.length}
-                    <button className="button" onClick={() => setModalPid(a.id)}>Details</button>
+                    <button className="button" onClick={() => setModalPid(a.id)}>
+                      Details
+                    </button>
                     {/* : {a.attributes.completions.data?.map(a => ' [' + a.id + '] ' )} */}{" "}
-                    
                   </td>
                   <td> {a.attributes.points} pt(s)</td>
                   <td>{moment(a.attributes.creation).fromNow()}</td>
@@ -110,19 +108,17 @@ export const Monitor = () => {
               </tbody>
             ))}
       </table>
-      <div className={`modal ${modal? "is-active" : ""}`}>
+      <div className={`modal ${modal ? "is-active" : ""}`}>
         <div className="modal-background"></div>
         <div className="modal-content has-text-white">
-        {completions &&
-                      completions.data
-                        .filter((c) => c.attributes.progression.data?.id == modal)
-                        .map((a, i) => (
-                          <li>
-                            {" "}
-                            {a.attributes.validation[0]?.competence.data?.attributes.Nom} :{" "}
-                            {a.attributes.validation[0]?.niveau}{" "}
-                          </li>
-                        ))}
+          {completions &&
+            completions.data
+              .filter((c) => c.attributes.progression.data?.id == modal)
+              .map((a, i) => (
+                <li>
+                 {console.log(a)}  {a.attributes.validation[0]?.competence.data?.attributes.Nom} : {a.attributes.validation[0]?.niveau}{" "}
+                </li>
+              ))}
         </div>
         <button className="modal-close is-large" onClick={() => setModalPid(0)} aria-label="close"></button>
       </div>

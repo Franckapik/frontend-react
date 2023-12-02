@@ -174,7 +174,7 @@ export const Question = ({ question, exo, index }) => {
                     className={
                       papier !== null
                         ? `p-1`
-                        : `button is-primary is-info is-flex-basis50 reponse is-size-5 m-3 ${
+                        : `button is-primary is-info is-flex-basis50 reponse has-text-weight-bold is-size-5 m-3 ${
                             isSelected ? "is-selected" : ""
                           } ${correction !== null && reponse.attributes.correct ? "is-correct" : ""} `
                     }

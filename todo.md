@@ -1,10 +1,4 @@
-
-quit et unsaved change for texte
-
-{papier!== null ? ``  : ``}
-
-
-CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
+resoudre le probleme de chargement du contenu.Faire un faux loading pour attendre avant d'afficher ? 
 
 Espoir : Avoir une liste des eleves avec leur completion et leur note totale. La note totale doit etre réfléchie en fonction du score total de l'évaluation.
 
@@ -22,3 +16,6 @@ essayer tt de mm de mettre un etat sur le layout comme   const [progressionId, s
 
 renseigner les PAP
 
+---------------
+
+CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
