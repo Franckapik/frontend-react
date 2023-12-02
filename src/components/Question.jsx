@@ -211,10 +211,12 @@ export const Question = ({ question, exo, index }) => {
                 <textarea
                   id={"textaera" + question.attributes.id}
                   rows="5"
-                  className="textarea"
+                  className={`textarea ${completion.data[0].attributes.contenu ? "textarea-active" : ""}`}
                   placeholder="Entre ta réponse ici ..."
                   ref={textareaRef}
-                ></textarea>
+                >{completion &&
+                  completion.data[0] &&
+                  completion.data[0].attributes.contenu}</textarea>
                 <button
                   onClick={() =>
                     correction === null &&

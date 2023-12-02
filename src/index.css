@@ -104,3 +104,6 @@ button:focus {
   
 }
 
+.textarea-active {
+  background-color: #E3DE62;
+}
