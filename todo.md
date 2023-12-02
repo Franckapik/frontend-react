@@ -1,6 +1,9 @@
-Replacer le button suivant pour les exercices. (précédents ? )
 
-Style changeant sur les cases a cocher (type de suestion)
+quit et unsaved change for texte
+
+Style changeant sur les cases a cocher (type de suestion) ? Pas sur ...
+
+connect relation ok. Différentes types de réponses à manager dans le hasAnswer. 
 
 
 {papier!== null ? ``  : ``}
