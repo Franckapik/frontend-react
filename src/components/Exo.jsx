@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Question } from "./Question.jsx";
 import { useSearchParams } from "react-router-dom";
 

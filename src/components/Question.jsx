@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import * as apiPost from "../api/post.js";
 import { useSearchParams } from "react-router-dom";
 import { Competences } from "./Competences.jsx";
@@ -136,7 +136,7 @@ export const Question = ({ question, exo, index }) => {
    */
   return (
     <>
-      {isSuccessCompletion && completion.data.length && (
+      {isSuccessCompletion && completion.data.length > 0 ? (
         <>
           <div
             className={
@@ -236,7 +236,7 @@ export const Question = ({ question, exo, index }) => {
             )}
           </div>
         </>
-      )}
+      ) : "Loading question"}
     </>
   );
 };

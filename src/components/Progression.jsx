@@ -1,7 +1,7 @@
 import moment from "moment";
 import "moment/dist/locale/fr";
 import React from "react";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { Breadcrumb } from "./BreadCrumb";
 moment().locale("fr");

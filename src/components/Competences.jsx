@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import * as apiFetch from "../api/fetch.js";
 import moment from "moment";
 import { useSearchParams } from "react-router-dom";
-import { useQuery } from "react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export const Competences = ({id, niveau}) => {
   const {
