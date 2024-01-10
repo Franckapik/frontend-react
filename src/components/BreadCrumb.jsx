@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
+import { getEva } from "../api/fetch";
 
 export const Breadcrumb = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -10,9 +11,11 @@ export const Breadcrumb = () => {
   const cid = searchParams.get("cid");
   const uid = searchParams.get("uid");
 
-  const { data: exercices, isSuccess } = useQuery("exercices", () =>
-    fetch(`https://strapi.eva-svt.ovh/api/exercices?populate=*&filters[evaluation]=${eid}`).then((res) => res.json())
-  );
+  const { data: exercices, isSuccess } = useQuery({
+    queryKey: ["exercices"],
+    queryFn: () => getEva(eid),
+    enabled: !!eid,
+  });
   return (
     <div>
       {isSuccess && (

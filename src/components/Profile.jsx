@@ -1,75 +1,41 @@
-import moment from "moment";
-import React, { useEffect, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import * as apiPost from "../api/post.js";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getClasses } from "../api/fetch.js";
+import { setProgression } from "../api/post.js";
 
 const Profile = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [cid, setClasseId] = useState();
   const [uid, setEleveId] = useState();
   const sessionPid = sessionStorage.getItem("sessionPid");
   const queryClient = useQueryClient();
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
 
   const {
-    isSuccess: isSuccessClasse,
+    isSuccess,
     data: classes,
-  } = useQuery("classes", () => fetch("https://strapi.eva-svt.ovh/api/classes?populate=*").then((res) => res.json()));
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["classes"],
+    queryFn: () => getClasses(),
+  });
 
-  const {
-    mutate: changeProgression,
-  } = useMutation(
-    async () => {
-      switch (sessionPid) {
-        case null:
-          const newProgression = await apiPost.postProgression({
-            creation: moment(),
-            classe: {
-              id: cid,
-            },
-            eleve: {
-              id: uid,
-            },
-          });
-          sessionStorage.setItem("sessionPid", newProgression.data.id);
-          console.log("Nouvelle session : " + newProgression.data.id);
-          setSearchParams((a) => {
-            a.set("pid", newProgression.data.id);
-            return searchParams;
-          })
-          return newProgression;
-          break;
-
-        default:
-          const retrieveProgression = await apiPost.updateProgression(
-            {
-              reprise: moment(),
-            },
-            sessionPid
-          );
-          console.log("Reprise de session : " + retrieveProgression.data.id);
-          setSearchParams((a) => {
-            a.set("pid", sessionPid);
-            return searchParams;
-          })
-          return retrieveProgression;
-          break;
-      }
+  const changeProgression = useMutation({
+    mutationFn: (data) => setProgression(data),
+    mutationKey: ["setProgression"],
+    onSuccess: (data) => {
+      queryClient.invalidateQueries(["progression"]);
+      navigate(`/dashboard?&pid=${data.id}&cid=${cid}&uid=${uid}`);
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["progression"]);
-        navigate(`/dashboard?pid=${searchParams.get("pid")}&cid=${cid}&uid=${uid}`)
-      },
-    }
-  );
+  });
 
-  return (
-    <div className="m-2 p-5 has-text-centered">
-      <div>
-        {isSuccessClasse && classes.data?.length ? (
+  if (isLoading) return "Chargement...";
+  if (error) console.log("An error occurred while fetching the user data ", error);
+  if (isSuccess)
+    return (
+      <div className="m-2 p-5 has-text-centered">
+        <div>
           <select
             name="classes"
             id="classes-select"
@@ -87,36 +53,42 @@ const Profile = () => {
               </option>
             ))}
           </select>
-        ) : (
-          "Chargement"
+        </div>
+        {cid && (
+          <div>
+            <div>
+              <select
+                name="eleve"
+                id="eleve-select"
+                className="select is-large m-5 w300 "
+                defaultValue={-1}
+                onChange={(e) => setEleveId(e.target.value)}
+              >
+                <option key={"default select"} value={-1} disabled="disabled">
+                  -- Quel est-ton nom ? --
+                </option>
+                {cid &&
+                  classes?.data
+                    .filter((a) => a.id == cid)[0]
+                    .attributes.eleve.data.map((eleve) => (
+                      <option key={"eleve" + eleve.id} value={eleve.id}>
+                        {eleve.attributes.Nom}
+                      </option>
+                    ))}
+              </select>
+            </div>
+          </div>
+        )}
+        {cid && uid && (
+          <button
+            className="button  is-medium  is-outlined"
+            onClick={() => changeProgression.mutate({ pid: sessionPid, cid: cid, uid: uid })}
+          >
+            Evaluation
+          </button>
         )}
       </div>
-      {cid ? <div>
-        <div>
-          <select
-            name="eleve"
-            id="eleve-select"
-            className="select is-large m-5 w300 "
-            defaultValue={-1}
-            onChange={(e) => setEleveId(e.target.value)}
-          >
-            <option key={"default select"} value={-1} disabled="disabled">
-              -- Quel est-ton nom ?  --
-            </option>
-            {cid &&
-              classes?.data
-                .filter((a) => a.id == cid)[0]
-                .attributes.eleve.data.map((eleve) => (
-                  <option key={"eleve" + eleve.id} value={eleve.id}>
-                    {eleve.attributes.Nom}
-                  </option>
-                ))}
-          </select>
-        </div>
-      </div> : ""}
-      {cid && uid ? <button className="button  is-medium  is-outlined" onClick={changeProgression}>Evaluation</button>
-        : ""}</div>
-  );
+    );
 };
 
 export default Profile;

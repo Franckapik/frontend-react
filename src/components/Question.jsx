@@ -1,248 +1,77 @@
-import React, { useRef } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import React from "react";
+import { useParams } from "react-router-dom";
+import { getCompletionByQID } from "../api/fetch.js";
 import * as apiPost from "../api/post.js";
-import { useSearchParams } from "react-router-dom";
-import { Competences } from "./Competences.jsx";
+import { QuestionChoice } from "./questions/QuestionChoices.jsx";
+import { QuestionText } from "./questions/QuestionText.jsx";
+import { useEvaParams } from "../hooks/useEvaParams.js";
 
-export const Question = ({ question, exo, index }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const pid = searchParams.get("pid");
-  const correction = searchParams.get("correction");
-  const papier = searchParams.get("papier");
-  const textareaRef = useRef(null)
-
+export const Question = ({ question, exid, index }) => {
+  const { pid, correction, papier } = useEvaParams();
   const queryClient = useQueryClient();
 
-  const { isSuccess: isSuccessCompletion, data: completion } = useQuery(
-    "completions" + "E" + exo.id + "Q" + index,
-    () =>
-      fetch(
-        `https://strapi.eva-svt.ovh/api/completions?populate[0]=reponses&filters[progression]=${pid}&filters[question]=${question.id}`
-      ).then((res) => res.json()),
-    {
-      onSuccess: (completion) => {
-        if (completion.data.length == 0) {
-          createCompletion();
-        }
-      },
-    }
-  );
-
-  const { mutate: createCompletion } = useMutation(
-    async () => {
-      return apiPost.postCompletion({
-        progression: {
-          id: pid,
-        },
-        question: {
-          id: question.id,
-        },
-        exercice: {
-          id: question.attributes.exercice.data.id,
-        },
-      });
-    },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["completions" + index]);
-      },
-    }
-  );
-
-  const { mutate: hasAnswer } = useMutation(
-    async ({ texte, type, rid, isSelected, score, comp, niveau }) => {
-      if (type === "choix multiple") {
-        switch (true) {
-          case isSelected === false || isSelected == 0:
-            return apiPost.updateCompletion(
-              {
-                reponses: {
-                  connect: [rid],
-                },
-                points: score,
-                validation: [
-                  {
-                    competence: comp,
-                    niveau: niveau,
-                  },
-                ],
-              },
-              completion.data[0].id
-            );
-            break;
-
-          case isSelected === true:
-            return apiPost.updateCompletion(
-              {
-                reponses: {
-                  disconnect: [rid],
-                },
-                points: score,
-                validation: [
-                  {
-                    competence: comp,
-                    niveau: niveau,
-                  },
-                ],
-              },
-              completion.data[0].id
-            );
-            break;
-
-          default:
-            break;
-        }
-      } else if (type === "choix simple") {
-        return apiPost.updateCompletion(
-          {
-            reponses: {
-              set: [rid] /* disconnect, connect, set*/,
-            },
-            points: score,
-            validation: [
-              {
-                competence: comp,
-                niveau: niveau,
-              },
-            ],
-          },
-          completion.data[0].id
-        );
-      } else if (type === "texte") {
-        console.log(texte);
-        return apiPost.updateCompletion(
-          {
-            contenu: texte,
-            points: score,
-            validation: [
-              {
-                competence: comp,
-                niveau: niveau,
-              },
-            ],
-          },
-          completion.data[0].id
-        );
+  const {
+    isSuccess,
+    data: completion,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["completions" + "E" + exid + "Q" + index],
+    queryFn: () => getCompletionByQID(question.id),
+    onSuccess: (completion) => {
+      if (completion.data.length == 0) {
+        createCompletion.mutate();
       }
     },
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(["completions" + "E" + exo.id + "Q" + index]);
-      },
-    }
-  );
+  });
 
-  /*   console.table(completion.data[0].attributes.reponses.data);
-   */
-  return (
-    <>
-      {isSuccessCompletion && completion.data.length > 0 ? (
-        <>
-          <div
-            className={
-              papier !== null
-                ? `has-text-weight-semibold mt-3 mb-3 is-flex is-justify-content-space-between`
-                : `box has-text-weight-semibold`
-            }
-          >
-            {papier !== null ? "► " : ""} Q{index}{" "}
-            {/* [ niveau 
-             {question.attributes.niveau} ] */}{" "}
-            : {question.attributes.contenu} ({question.attributes.type})
-            {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
-            <div className="is-size-7 mr-5">
-              Compétence :{" "}
-              {correction !== null && completion.data[0]?.attributes.validation.length
-                ? completion.data[0]?.attributes.validation[0]?.competence.data?.attributes.Nom +
-                  ":" +
-                  completion.data[0]?.attributes.validation[0]?.niveau
-                : question.attributes.competence.data?.attributes.Nom}
-            </div>
-          </div>
-          <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
-            {(question.attributes.type === "choix simple" || question.attributes.type === "choix multiple") &&
-              question.attributes.reponses.data.map((reponse, i) => {
-                let isSelected =
-                  completion &&
-                  completion.data[0] &&
-                  completion.data[0].attributes.reponses &&
-                  completion.data[0].attributes.reponses.data.length &&
-                  completion.data[0].attributes.reponses.data.map((a) => a.id).includes(reponse.id);
-                return (
-                  <div
-                    key={"reponse" + i}
-                    className={
-                      papier !== null
-                        ? `p-1`
-                        : `button is-primary is-info is-flex-basis50 reponse has-text-weight-bold is-size-5 m-3 ${
-                            isSelected ? "is-selected" : ""
-                          } ${correction !== null && reponse.attributes.correct ? "is-correct" : ""} `
-                    }
-                    onClick={() =>
-                      correction === null &&
-                      hasAnswer({
-                        type: question.attributes.type,
-                        rid: reponse.id,
-                        isSelected: isSelected,
-                        score: reponse.attributes.correct ? question.attributes.score : 0,
-                        comp: question.attributes.competence.data.id,
-                        niveau: reponse.attributes.correct ? 4 : 1,
-                      })
-                    }
-                  >
-                    {papier !== null
-                      ? correction !== null
-                        ? completion.data[0].attributes.reponse.data?.id == reponse.id
-                          ? reponse.attributes.correct
-                            ? "🗹"
-                            : "𐄂"
-                          : reponse.attributes.correct
-                          ? "→"
-                          : "□"
-                        : "□"
-                      : ""}
-                    {reponse.attributes.type} {reponse.attributes.contenu}
-                  </div>
-                );
-              })}
+  const createCompletion = useMutation({
+    mutationFn: () => apiPost.setCompletion({ pid: pid, qid: question.id, eid: question.attributes.exercice.data.id }),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["completions" + index]);
+    },
+  });
 
-            {question.attributes.type === "texte" && (
-              <>
-                <textarea
-                  id={"textaera" + question.attributes.id}
-                  rows="5"
-                  className={`textarea ${completion.data[0].attributes.contenu ? "textarea-active" : ""}`}
-                  placeholder="Entre ta réponse ici ..."
-                  ref={textareaRef}
-                >{completion &&
-                  completion.data[0] &&
-                  completion.data[0].attributes.contenu}</textarea>
-                <button
-                  onClick={() =>
-                    correction === null &&
-                    hasAnswer({
-                      texte: textareaRef.current.value,
-                      type: question.attributes.type,
-                      score: question.attributes.score,
-                      comp: question.attributes.competence.data.id,
-                      niveau: 4,
-                    })
-                  }
-                  className="button mt-2"
-                >
-                  Valider ma réponse
-                </button>
-              </>
-            )}
+  const hasAnswer = useMutation({
+    mutationFn: (data) => apiPost.setCompletionResponse(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries(["completions" + "E" + exid + "Q" + index]);
+    },
+  });
+
+  if (isLoading) return "Chargement...";
+  if (error) console.log("An error occurred while fetching the user data ", error);
+  if (isSuccess)
+    return (
+      <>
+        <div
+          className={
+            papier !== null
+              ? `has-text-weight-semibold mt-3 mb-3 is-flex is-justify-content-space-between`
+              : `box has-text-weight-semibold`
+          }
+        >
+          {papier !== null ? "► " : ""} Q{index} : {question.attributes.contenu} ({question.attributes.type})
+          {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
+          <div className="is-size-7 mr-5">
+            Compétence :{" "}
+            {correction !== null && completion.data[0]?.attributes.validation.length
+              ? completion.data[0]?.attributes.validation[0]?.competence.data?.attributes.Nom +
+                ":" +
+                completion.data[0]?.attributes.validation[0]?.niveau
+              : question.attributes.competence.data?.attributes.Nom}
           </div>
-        </>
-      ) : "Loading question"}
-    </>
-  );
+        </div>
+        <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
+          {(question.attributes.type === "choix simple" || question.attributes.type === "choix multiple") && (
+            <QuestionChoice question={question} completion={completion} hasAnswer={hasAnswer} />
+          )}
+
+          {question.attributes.type === "texte" && (
+            <QuestionText question={question} completion={completion} hasAnswer={hasAnswer} />
+          )}
+        </div>
+      </>
+    );
 };
-/* 
-{`button is-primary is-info is-flex-basis50 reponse is-size-4 m-3 ${
-  completion && completion.data[0].attributes.reponse.data?.id == reponse.id ? "is-selected" : ""
-} ${
-  correction !== null && reponse.attributes.correct ? "is-correct" : ""
-} `} */

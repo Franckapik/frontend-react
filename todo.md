@@ -1,3 +1,15 @@
+V5 react query.
+Dashboard et profil reconverti. Gros menage a faire dans fetch et post qui sapelleront query et mutate 
+rename setCOmpletion ?
+bien reperer dans les questions ce qui est lu en cache ou pas : stale ou  fetching lors du chagmt dexo 
+
+rendu aux questiolns a refactoriser
+
+usePArams hooks for all pages
+
+
+dif entre exo et questions ? pas tres clair sur les query : changer les noms
+
 
 resoudre le probleme de chargement du contenu.Faire un faux loading pour attendre avant d'afficher ? 
 
@@ -29,3 +41,5 @@ renseigner les PAP
 ---------------
 
 CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
+
+Profile > Dashboard > Evaluation > Exo > Questions 
