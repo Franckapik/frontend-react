@@ -1,9 +1,7 @@
-import { useParams } from "react-router-dom";
 import { useEvaParams } from "../../hooks/useEvaParams";
 
 export const QuestionChoice = ({ question, completion, hasAnswer }) => {
   const { correction, papier } = useEvaParams();
-
   return question.attributes.reponses.data.map((reponse, i) => {
     let isSelected = completion.data[0]?.attributes.reponses.data?.map((a) => a.id).includes(reponse.id);
     return (
@@ -19,6 +17,7 @@ export const QuestionChoice = ({ question, completion, hasAnswer }) => {
         onClick={() =>
           correction === null &&
           hasAnswer.mutate({
+            cid: completion.data[0]?.id,
             type: question.attributes.type,
             rid: reponse.id,
             isSelected: isSelected,

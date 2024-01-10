@@ -3,6 +3,13 @@ Dashboard et profil reconverti. Gros menage a faire dans fetch et post qui sapel
 rename setCOmpletion ?
 bien reperer dans les questions ce qui est lu en cache ou pas : stale ou  fetching lors du chagmt dexo 
 
+
+
+si le pid n'existe pas dans les completions alors il faut creer une completion
+
+je bloque sur le moyen de creer une completion à l'affichage des questions avec le pid qui ne doit pas changer si je refresh la page !
+Les completions ne devrait pas s'ajouter mais se modifier.
+
 rendu aux questiolns a refactoriser
 
 usePArams hooks for all pages

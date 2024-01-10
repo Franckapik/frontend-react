@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { useParams } from "react-router-dom";
 import { getExo } from "../api/fetch.js";
-import { Question } from "./Question.jsx";
 import { useEvaParams } from "../hooks/useEvaParams.js";
+import { Questions } from "./Questions.jsx";
 
 export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
   const { papier, correction } = useEvaParams();
@@ -16,7 +15,7 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["questions" + exo.id],
+    queryKey: ["questionsExo" + exo.id],
     queryFn: () => getExo(exo.id),
   });
 
@@ -71,7 +70,7 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
             <div>
               <ReactMarkdown>{exo.attributes.contenu}</ReactMarkdown>
               {questions.data.map((question, i) => (
-                <Question key={"question" + i} question={question} exid={exo.id} index={i + 1} />
+                <Questions key={"questions" + i} question={question} exid={exo.id} index={i + 1} />
               ))}
             </div>
           </div>

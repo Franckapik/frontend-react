@@ -1,34 +1,6 @@
 import axios from "axios";
 import moment from "moment";
 
-export const postCompletion = (data) =>
-  axios
-    .post(`https://strapi.eva-svt.ovh/api/completions?populate=*`, {
-      data: data,
-    })
-    .then((response) => {
-      console.info("[POST] [Completion] [/api/completions]");
-      return response.data;
-    })
-    .catch((err) => {
-      console.error(err);
-      return err;
-    });
-
-export const updateCompletion = (data, id) =>
-  axios
-    .put(`https://strapi.eva-svt.ovh/api/completions/${id}?populate=*`, {
-      data: data,
-    })
-    .then((response) => {
-      console.info(`[UPDATE] [Completion] [/api/completions/${id}]`);
-      return response.data;
-    })
-    .catch((err) => {
-      console.error(err);
-      return err;
-    });
-
 export const setProgression = ({ pid, cid, uid }) => {
   switch (pid) {
     /* new session */
@@ -81,63 +53,90 @@ export const setProgression = ({ pid, cid, uid }) => {
 
 export const setEvaId = ({ evaId, pid }) => {
   return axios
-        .put(`https://strapi.eva-svt.ovh/api/progressions/${pid}?populate=*`, {
-          data: {
-            evaluation: {
-              id: evaId,
-            },
-          },
-          pid: pid,
-        })
-        .then((response) => {
-          console.info("[PUT] [Add Evaluation Id in Progression] [/api/progressions] on id : " + pid);
-          console.info("Reprise de session existante");
-          return response.data.data;
-        })
-        .catch((err) => {
-          console.error(err);
-          return err;
-        });
+    .put(`https://strapi.eva-svt.ovh/api/progressions/${pid}?populate=*`, {
+      data: {
+        evaluation: {
+          id: evaId,
+        },
+      },
+      pid: pid,
+    })
+    .then((response) => {
+      console.info("[PUT] [Add Evaluation Id in Progression] [/api/progressions] on id : " + pid);
+      console.info("Reprise de session existante");
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };
 
 export const setPoints = ({ note, pid }) => {
   return axios
-        .put(`https://strapi.eva-svt.ovh/api/progressions/${pid}?populate=*`, {
-          data: {
-            points: note,
-          },
-          pid: pid,
-        })
-        .then((response) => {
-          console.info("[PUT] [Update Points in Progression] [/api/progressions] on id : " + pid);
-          return response.data.data;
-        })
-        .catch((err) => {
-          console.error(err);
-          return err;
-        });
+    .put(`https://strapi.eva-svt.ovh/api/progressions/${pid}?populate=*`, {
+      data: {
+        points: note,
+      },
+      pid: pid,
+    })
+    .then((response) => {
+      console.info("[PUT] [Update Points in Progression] [/api/progressions] on id : " + pid);
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };
 
 export const setCompletion = ({ pid, qid, eid }) => {
-  return apiPost.postCompletion({
-    progression: {
-      id: pid,
-    },
-    question: {
-      id: qid,
-    },
-    exercice: {
-      id: eid,
-    },
-  });
+  console.log(pid, qid, eid);
+  return axios
+    .post(`https://strapi.eva-svt.ovh/api/completions?populate=*`, {
+      data: {
+        progression: {
+          id: pid,
+        },
+        question: {
+          id: qid,
+        },
+        exercice: {
+          id: eid,
+        },
+      },
+    })
+    .then((response) => {
+      console.info("[POST] [Completion] [/api/completions]");
+      return response.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
 };
 
-export const setCompletionResponse = ({ texte, type, rid, isSelected, score, comp, niveau }) => {
+export const setCompletionResponse = ({ texte, type, rid, isSelected, score, comp, niveau, cid }) => {
+console.log(texte, type, rid, isSelected, score, comp, niveau, cid );
+  const updateCompletion = ({ cid, data }) =>
+    axios
+      .put(`https://strapi.eva-svt.ovh/api/completions/${id}?populate=*`, {
+        data: data,
+      })
+      .then((response) => {
+        console.info(`[UPDATE] [Completion] [/api/completions/${id}]`);
+        return response.data;
+      })
+      .catch((err) => {
+        console.error(err);
+        return err;
+      });
+
   if (type === "choix multiple") {
     switch (true) {
       case isSelected === false || isSelected == 0:
-        return apiPost.updateCompletion(
-          {
+        return updateCompletion({
+          data: {
             reponses: {
               connect: [rid],
             },
@@ -149,13 +148,13 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
               },
             ],
           },
-          completion.data[0].id
-        );
+          cid: cid,
+        });
         break;
 
       case isSelected === true:
-        return apiPost.updateCompletion(
-          {
+        return updateCompletion({
+          data: {
             reponses: {
               disconnect: [rid],
             },
@@ -167,16 +166,16 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
               },
             ],
           },
-          completion.data[0].id
-        );
+          cid: cid,
+        });
         break;
 
       default:
         break;
     }
   } else if (type === "choix simple") {
-    return apiPost.updateCompletion(
-      {
+    return updateCompletion({
+      data: {
         reponses: {
           set: [rid] /* disconnect, connect, set*/,
         },
@@ -188,12 +187,11 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
           },
         ],
       },
-      completion.data[0].id
-    );
+      cid: cid,
+    });
   } else if (type === "texte") {
-    console.log(texte);
-    return apiPost.updateCompletion(
-      {
+    return updateCompletion({
+      data: {
         contenu: texte,
         points: score,
         validation: [
@@ -203,7 +201,7 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
           },
         ],
       },
-      completion.data[0].id
-    );
+      cid: cid,
+    });
   }
 };

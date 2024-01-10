@@ -1,15 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 import { getEva } from "../api/fetch";
+import { useEvaParams } from "../hooks/useEvaParams";
 
 export const Breadcrumb = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-
-  const exo = searchParams.get("exo");
-  const eid = searchParams.get("eid");
-  const pid = searchParams.get("pid");
-  const cid = searchParams.get("cid");
-  const uid = searchParams.get("uid");
+  const {exo, pid, eid, cid, uid} = useEvaParams
 
   const { data: exercices, isSuccess } = useQuery({
     queryKey: ["exercices"],

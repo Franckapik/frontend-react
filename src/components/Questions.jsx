@@ -1,50 +1,58 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { getCompletionByQID } from "../api/fetch.js";
-import * as apiPost from "../api/post.js";
+import { setCompletion, setCompletionResponse } from "../api/post.js";
+import { useEvaParams } from "../hooks/useEvaParams.js";
 import { QuestionChoice } from "./questions/QuestionChoices.jsx";
 import { QuestionText } from "./questions/QuestionText.jsx";
-import { useEvaParams } from "../hooks/useEvaParams.js";
 
-export const Question = ({ question, exid, index }) => {
+export const Questions = ({ question, exid, index }) => {
   const { pid, correction, papier } = useEvaParams();
   const queryClient = useQueryClient();
+  const [isCompletion, setIsCompletion] = useState(false)
 
+  /* Check if existing completion */
   const {
     isSuccess,
     data: completion,
     error,
     isLoading,
   } = useQuery({
-    queryKey: ["completions" + "E" + exid + "Q" + index],
-    queryFn: () => getCompletionByQID(question.id),
-    onSuccess: (completion) => {
-      if (completion.data.length == 0) {
-        createCompletion.mutate();
-      }
-    },
+    queryKey: ["completions" + "Exo" + exid + "Q" + index],
+    queryFn: () => getCompletionByQID({ pid: pid, qid: question.id }),
   });
 
   const createCompletion = useMutation({
-    mutationFn: () => apiPost.setCompletion({ pid: pid, qid: question.id, eid: question.attributes.exercice.data.id }),
+    mutationKey: ["createCompletion" + index],
+    mutationFn: (data) => setCompletion(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["completions" + index]);
+      setIsCompletion(true)
+      queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });
 
+  /* Une question non répondue doit être enregistrée dès le début */
+  useEffect(() => {
+    if(completion && completion.data?.length === 0) {
+      createCompletion.mutate({ pid: pid, qid: question.id, eid: question.attributes.exercice.data.id })
+    }
+  }, [completion])
+
   const hasAnswer = useMutation({
-    mutationFn: (data) => apiPost.setCompletionResponse(data),
+    mutationKey: ["setCompletionresponse" + index],
+    mutationFn: (data) => setCompletionResponse(data),
     onSuccess: () => {
-      queryClient.invalidateQueries(["completions" + "E" + exid + "Q" + index]);
+      queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });
+
 
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
-  if (isSuccess)
+  if (isSuccess && isCompletion)
     return (
       <>
+        {/* Questions title */}
         <div
           className={
             papier !== null
@@ -63,6 +71,8 @@ export const Question = ({ question, exid, index }) => {
               : question.attributes.competence.data?.attributes.Nom}
           </div>
         </div>
+
+        {/* Questions input */}
         <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
           {(question.attributes.type === "choix simple" || question.attributes.type === "choix multiple") && (
             <QuestionChoice question={question} completion={completion} hasAnswer={hasAnswer} />

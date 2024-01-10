@@ -78,7 +78,6 @@ export const fetchAllCompetences = () =>
     .then((response) => response.data)
     .catch((error) => Promise.reject(error));
 
-
 export const getClasses = () => fetch("https://strapi.eva-svt.ovh/api/classes?populate=*").then((res) => res.json());
 
 export const getProgression = (pid) =>
@@ -90,11 +89,14 @@ export const getEvaluations = (cid) =>
 export const getEva = (eid) =>
   fetch(`https://strapi.eva-svt.ovh/api/exercices?populate=*&filters[evaluation]=${eid}`).then((res) => res.json());
 
-  export const getExo = (exid) =>
-  fetch(`https://strapi.eva-svt.ovh/api/questions?populate=*&filters[exercice]=${exid}`).then((res) => res.json())
+export const getExo = (exid) =>
+  fetch(`https://strapi.eva-svt.ovh/api/questions?populate=*&filters[exercice]=${exid}`).then((res) => res.json());
 
-  export const getCompletionByQID = (pid, qid) =>
-  fetch(
-    `https://strapi.eva-svt.ovh/api/completions?populate[0]=reponses&filters[progression]=${pid}&filters[question]=${qid}`
-  ).then((res) => res.json())
-
+export const getCompletionByQID = ({pid, qid}) =>{
+  return axios
+    .create({
+      baseURL: `https://strapi.eva-svt.ovh/api/completions?populate[0]=reponses&filters[progression]=${pid}&filters[question]=${qid}`,
+    })
+    .get()
+    .then((response) => response.data)
+    .catch((error) => Promise.reject(error));}
