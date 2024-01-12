@@ -63,7 +63,7 @@ export const Questions = ({ question, exid, index }) => {
           {correction !== null && completion.attributes.points} / {question.attributes.score}
           <div className="is-size-7 mr-5">
             Compétence :{" "}
-            {correction !== null && completion.attributes.validation.length
+            {correction !== null && completion.attributes.validation?.length
               ? completion.attributes.validation[0]?.competence.data?.attributes.Nom +
                 ":" +
                 completion.attributes.validation[0]?.niveau

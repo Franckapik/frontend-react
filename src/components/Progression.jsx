@@ -1,17 +1,20 @@
 import moment from "moment";
 import "moment/dist/locale/fr";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useParams, useSearchParams } from "react-router-dom";
 import { Breadcrumb } from "./BreadCrumb";
 import { getProgression } from "../api/fetch";
 import { useEvaParams } from "../hooks/useEvaParams";
+import { createAvatar } from "@dicebear/core";
+import { adventurerNeutral } from "@dicebear/collection";
 moment().locale("fr");
 
 export const Progression = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const pid = sessionStorage.getItem("sessionPid") || searchParams.get("pid") || 0;
-  const {exo, eid, papier, correction} = useEvaParams();
+  const { exo, eid, papier, correction } = useEvaParams();
+  const [avatar, setAvatar] = useState(false);
 
   const {
     isLoading,
@@ -23,6 +26,20 @@ export const Progression = () => {
     queryFn: () => getProgression(pid),
     enabled: !!pid,
   });
+
+  useEffect(() => {
+    if (progression?.data[0]) {
+      const avatar = createAvatar(adventurerNeutral, {
+        seed: progression.data[0].attributes.eleve.data?.attributes.Nom,
+        size: 64,
+        radius: 50
+      });
+      const svg = avatar.toDataUriSync();
+      setAvatar(svg);
+    }
+  }, [isSuccess]);
+
+  
 
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
@@ -56,13 +73,14 @@ export const Progression = () => {
             <thead>
               <tr>
                 <th>
-                  <i className="fa-regular fa-id-badge"></i> NOM/PRENOM :{" "}
+                  <i className="fa-regular fa-id-badge"></i>  {avatar && <img src={avatar} />} NOM/PRENOM :{" "}
                   {papier === null && progression.data[0]?.attributes.eleve?.data != null && (
                     <div className="tag is-medium ">{progression.data[0].attributes.eleve.data.attributes.Nom} </div>
                   )}
                 </th>
                 <th>
-                  <i className="fa-solid fa-people-roof"></i> CLASSE :{" "}
+                  <i className="fa-solid fa-people-roof"></i>
+                 CLASSE :{" "}
                   {papier === null && progression.data[0]?.attributes.classe?.data != null && (
                     <div className="tag is-medium"> {progression.data[0].attributes.classe.data.attributes.Classe}</div>
                   )}{" "}
