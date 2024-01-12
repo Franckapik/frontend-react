@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { getExo } from "../api/fetch.js";
 import { useEvaParams } from "../hooks/useEvaParams.js";
@@ -7,7 +7,7 @@ import { Questions } from "./Questions.jsx";
 
 export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
   const { papier, correction } = useEvaParams();
-  const [pointsExo, setPointsExo] = useState(0);
+  const [pointsExo, setPointsExo] = useState(false);
 
   const {
     data: questions,
@@ -19,43 +19,17 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
     queryFn: () => getExo(exo.id),
   });
 
-  /* const { data: completion } = useQuery(
-    "completions" + "E" + exo.id,
-    () =>
-      fetch(
-        `https://strapi.eva-svt.ovh/api/completions?populate=deep&filters[progression]=${pid}&filters[exercice]=${exo.id}`
-      ).then((res) => res.json()),
-    {
-      onSuccess: (completions) => {
-        const pointsExo = completions.data?.reduce((acc, val) => (acc += val.attributes.points), 0);
-        /*   const essai = completion.data?.reduce((acc,val) => {
-          const obj = {}
-          obj[val.attributes.validation[0]?.competence.data?.id] = val.attributes.validation[0]?.niveau
-          console.log(obj);
-          let moy = 
-          acc = {...acc, ...obj}
-          return acc
-       
-        }, {}
-        )
- 
-           const essai = completion.data.map((a) => {
-          const validation = a.attributes.validation[0]
-          const compId = a.attributes.validation[0].competence.data?.id
-          return {exo : exo.id, competence : compId, niveau : validation.niveau}
-        })
-        const essai2 = essai.reduce((acc, val) => (
-          acc = val.niveau / 2
-        ), {})
-        setCompsEva((prev) => ({ ...prev, ...essai })); 
-
-        setPointsExo(pointsExo);
-        const pts = {};
-        pts["exo" + exo.id] = pointsExo;
-        setPointsEva((prev) => ({ ...prev, ...pts }));
-      },
+  useEffect(() => {
+    if(pointsExo && correction === null) {
+      console.log("Questions points:" , pointsExo);
+      const e = Object.values(pointsExo).reduce((acc, val) => acc + val);
+      const newPoints = {};
+      newPoints[exo.id] = e;
+      setPointsEva((old) => ({ ...old, ...newPoints }));
     }
-  ); */
+  }, [pointsExo]);
+
+
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
   if (isSuccess)
@@ -70,7 +44,13 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
             <div>
               <ReactMarkdown>{exo.attributes.contenu}</ReactMarkdown>
               {questions.data.map((question, i) => (
-                <Questions key={"questions" + i} question={question} exid={exo.id} index={i + 1} />
+                <Questions
+                  key={"questions" + i}
+                  question={question}
+                  setPointsExo={setPointsExo}
+                  exid={exo.id}
+                  index={i + 1}
+                />
               ))}
             </div>
           </div>

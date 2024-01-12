@@ -4,6 +4,8 @@ rename setCOmpletion ?
 bien reperer dans les questions ce qui est lu en cache ou pas : stale ou  fetching lors du chagmt dexo 
 
 
+soumettre certaines question a validation
+
 
 si le pid n'existe pas dans les completions alors il faut creer une completion
 

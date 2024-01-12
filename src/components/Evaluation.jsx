@@ -11,14 +11,14 @@ const Evaluation = () => {
   const queryClient = useQueryClient();
   const {pid, exo, eid, papier, correction} = useEvaParams();
 
-  const [pointsEva, setPointsEva] = useState([]);
-  const [compsEva, setCompsEva] = useState([]);
+  const [pointsEva, setPointsEva] = useState({});
 
   const { data: exercices, isSuccess, isLoading, error } = useQuery({
     queryKey: ["exercices"],
     queryFn: () => getEva(eid),
     enabled: !!eid,
   });
+
 
   const changeNote = useMutation({
     mutationFn: (data) => setPoints(data),
@@ -29,17 +29,12 @@ const Evaluation = () => {
 
   useEffect(() => {
     if (correction === null) {
+      console.log(pointsEva);
       const note = Object.values(pointsEva).reduce((acc, val) => (acc += val), 0);
+      console.log("note totale eva", note);
       changeNote.mutate({ pid: pid, note: note });
     }
   }, [pointsEva, correction]);
-
-  useEffect(() => {
-    if (correction === null) {
-      /* const note = Object.values(pointsEva).reduce((acc, val) => acc += val, 0)
-      changeNote(note) */
-    }
-  }, [compsEva, correction]);
 
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
@@ -51,7 +46,7 @@ const Evaluation = () => {
           {exercices.data
             .filter((a, i) => (exo !== null ? i == exo : true))
             .map((exercice, i) => (
-              <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} setCompsEva={setCompsEva} />
+              <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} />
             ))}
           {exo && <BreadCrumbExo exo={exo} exoMax={exercices.data.length}/>}
         </div>

@@ -5,11 +5,12 @@ import { setCompletion, setCompletionResponse } from "../api/post.js";
 import { useEvaParams } from "../hooks/useEvaParams.js";
 import { QuestionChoice } from "./questions/QuestionChoices.jsx";
 import { QuestionText } from "./questions/QuestionText.jsx";
+import { DNA } from 'react-loader-spinner'
 
-export const Questions = ({ question, exid, index }) => {
+
+export const Questions = ({ question, exid, index, setPointsExo }) => {
   const { pid, correction, papier } = useEvaParams();
   const queryClient = useQueryClient();
-  const [isCompletion, setIsCompletion] = useState(false)
 
   /* Check if existing completion */
   const {
@@ -26,7 +27,6 @@ export const Questions = ({ question, exid, index }) => {
     mutationKey: ["createCompletion" + index],
     mutationFn: (data) => setCompletion(data),
     onSuccess: () => {
-      setIsCompletion(true)
       queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });
@@ -41,12 +41,17 @@ export const Questions = ({ question, exid, index }) => {
   const hasAnswer = useMutation({
     mutationKey: ["setCompletionresponse" + index],
     mutationFn: (data) => setCompletionResponse(data),
-    onSuccess: () => {
+    onSuccess: (a) => {
+      console.log("Exercices points:" , a);
+
+      const newPoints = {};
+      newPoints[a.data.attributes.question.data.id] = a.data.attributes.points
+      setPointsExo((old) => ({...old, ...newPoints}))
       queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });
 
-  if (isLoading) return "Chargement...";
+  if (isLoading) return <DNA />;
   if (error) console.log("An error occurred while fetching the user data ", error);
   if (isSuccess && completion)
     return (
@@ -74,7 +79,7 @@ export const Questions = ({ question, exid, index }) => {
         {/* Questions input */}
         <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
           {(question.attributes.type === "choix simple" || question.attributes.type === "choix multiple") && (
-            <QuestionChoice question={question} completion={completion} hasAnswer={hasAnswer} />
+            <QuestionChoice question={question} completion={completion} hasAnswer={hasAnswer}  />
           )}
 
           {question.attributes.type === "texte" && (

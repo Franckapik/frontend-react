@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import * as apiPost from "../api/post.js";
 import { getEvaluations } from "../api/fetch.js";
+import { DNA } from "react-loader-spinner";
 
 const Dashboard = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +28,7 @@ const Dashboard = () => {
     },
   });
 
-  if (isLoading) return "Chargement...";
+  if (isLoading) return < DNA />;
   if (error) console.log("An error occurred while fetching the user data ", error);
   if (isSuccess)
     return (

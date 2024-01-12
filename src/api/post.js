@@ -72,6 +72,8 @@ export const setEvaId = ({ evaId, pid }) => {
     });
 };
 
+
+/* Envoyer un fichier json avec le recap des points par question et par exo avec également la note totale accumulée.*/
 export const setPoints = ({ note, pid }) => {
   return axios
     .put(`https://strapi.eva-svt.ovh/api/progressions/${pid}?populate=*`, {
@@ -91,7 +93,6 @@ export const setPoints = ({ note, pid }) => {
 };
 
 export const setCompletion = ({ pid, qid, eid }) => {
-  console.log(pid, qid, eid);
   return axios
     .post(`https://strapi.eva-svt.ovh/api/completions?populate=*`, {
       data: {
@@ -117,7 +118,6 @@ export const setCompletion = ({ pid, qid, eid }) => {
 };
 
 export const setCompletionResponse = ({ texte, type, rid, isSelected, score, comp, niveau, cid }) => {
-  console.log(cid);
   const updateCompletion = ({ cid, data }) =>
     axios
       .put(`https://strapi.eva-svt.ovh/api/completions/${cid}?populate=*`, {

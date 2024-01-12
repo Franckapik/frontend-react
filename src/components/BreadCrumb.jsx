@@ -6,7 +6,6 @@ import { useEvaParams } from "../hooks/useEvaParams";
 export const Breadcrumb = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const {exo, pid, eid, cid, uid} = useEvaParams();
-  console.log(pid, cid, uid);
 
   const { data: exercices, isSuccess } = useQuery({
     queryKey: ["exercices"],
