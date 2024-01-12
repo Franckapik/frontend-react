@@ -3,7 +3,7 @@ import { useEvaParams } from "../../hooks/useEvaParams";
 export const QuestionChoice = ({ question, completion, hasAnswer }) => {
   const { correction, papier } = useEvaParams();
   return question.attributes.reponses.data.map((reponse, i) => {
-    let isSelected = completion.data[0]?.attributes.reponses.data?.map((a) => a.id).includes(reponse.id);
+    let isSelected = completion.attributes.reponses.data?.map((a) => a.id).includes(reponse.id);
     return (
       <div
         key={"reponse" + i}
@@ -17,7 +17,7 @@ export const QuestionChoice = ({ question, completion, hasAnswer }) => {
         onClick={() =>
           correction === null &&
           hasAnswer.mutate({
-            cid: completion.data[0]?.id,
+            cid: completion.id,
             type: question.attributes.type,
             rid: reponse.id,
             isSelected: isSelected,
@@ -29,7 +29,7 @@ export const QuestionChoice = ({ question, completion, hasAnswer }) => {
       >
         {papier !== null
           ? correction !== null
-            ? completion.data[0]?.attributes.reponse.data?.id == reponse.id
+            ? completion.attributes.reponse.data?.id == reponse.id
               ? reponse.attributes.correct
                 ? "🗹"
                 : "𐄂"

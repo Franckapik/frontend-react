@@ -117,14 +117,14 @@ export const setCompletion = ({ pid, qid, eid }) => {
 };
 
 export const setCompletionResponse = ({ texte, type, rid, isSelected, score, comp, niveau, cid }) => {
-console.log(texte, type, rid, isSelected, score, comp, niveau, cid );
+  console.log(cid);
   const updateCompletion = ({ cid, data }) =>
     axios
-      .put(`https://strapi.eva-svt.ovh/api/completions/${id}?populate=*`, {
+      .put(`https://strapi.eva-svt.ovh/api/completions/${cid}?populate=*`, {
         data: data,
       })
       .then((response) => {
-        console.info(`[UPDATE] [Completion] [/api/completions/${id}]`);
+        console.info(`[UPDATE] [Completion] [/api/completions/${cid}]`);
         return response.data;
       })
       .catch((err) => {

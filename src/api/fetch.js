@@ -98,5 +98,11 @@ export const getCompletionByQID = ({pid, qid}) =>{
       baseURL: `https://strapi.eva-svt.ovh/api/completions?populate[0]=reponses&filters[progression]=${pid}&filters[question]=${qid}`,
     })
     .get()
-    .then((response) => response.data)
+    .then((response) => {
+      if (response.data.data.length > 0) {
+        return(response.data.data[0])
+      } else {
+        return null
+      }
+    })
     .catch((error) => Promise.reject(error));}

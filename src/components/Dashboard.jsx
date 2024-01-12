@@ -38,7 +38,7 @@ const Dashboard = () => {
               <div
                 key={"eva" + eva.id}
                 onClick={() => startEvaluation.mutate({ evaId: eva.id, pid: pid })}
-                className="box box_eva has-text-centered"
+                className="box box_eva has-text-centered m-3"
               >
                 <p className="is-size-4  is-underlined p-4">Evaluation n° {i + 1}</p>
                 <p className="is-size-5 ">{eva.attributes.Nom}</p>

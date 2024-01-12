@@ -33,10 +33,10 @@ export const Questions = ({ question, exid, index }) => {
 
   /* Une question non répondue doit être enregistrée dès le début */
   useEffect(() => {
-    if(completion && completion.data?.length === 0) {
+    if(completion === null) {
       createCompletion.mutate({ pid: pid, qid: question.id, eid: question.attributes.exercice.data.id })
     }
-  }, [completion])
+  }, [isSuccess])
 
   const hasAnswer = useMutation({
     mutationKey: ["setCompletionresponse" + index],
@@ -46,10 +46,9 @@ export const Questions = ({ question, exid, index }) => {
     },
   });
 
-
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
-  if (isSuccess && isCompletion)
+  if (isSuccess && completion)
     return (
       <>
         {/* Questions title */}
@@ -61,13 +60,13 @@ export const Questions = ({ question, exid, index }) => {
           }
         >
           {papier !== null ? "► " : ""} Q{index} : {question.attributes.contenu} ({question.attributes.type})
-          {correction !== null && completion.data[0]?.attributes.points} / {question.attributes.score}
+          {correction !== null && completion.attributes.points} / {question.attributes.score}
           <div className="is-size-7 mr-5">
             Compétence :{" "}
-            {correction !== null && completion.data[0]?.attributes.validation.length
-              ? completion.data[0]?.attributes.validation[0]?.competence.data?.attributes.Nom +
+            {correction !== null && completion.attributes.validation.length
+              ? completion.attributes.validation[0]?.competence.data?.attributes.Nom +
                 ":" +
-                completion.data[0]?.attributes.validation[0]?.niveau
+                completion.attributes.validation[0]?.niveau
               : question.attributes.competence.data?.attributes.Nom}
           </div>
         </div>
