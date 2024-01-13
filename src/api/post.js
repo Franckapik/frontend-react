@@ -117,7 +117,7 @@ export const setCompletion = ({ pid, qid, eid }) => {
     });
 };
 
-export const setCompletionResponse = ({ texte, type, rid, isSelected, score, comp, niveau, cid }) => {
+export const setCompletionResponse = ({ texte, type, rid, isSelected, points, comp, niveau, cid }) => {
   const updateCompletion = ({ cid, data }) =>
     axios
       .put(`https://strapi.eva-svt.ovh/api/completions/${cid}?populate=*`, {
@@ -140,7 +140,7 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
             reponses: {
               connect: [rid],
             },
-            points: score,
+            points: points,
             validation: [
               {
                 competence: comp,
@@ -158,7 +158,7 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
             reponses: {
               disconnect: [rid],
             },
-            points: score,
+            points: points,
             validation: [
               {
                 competence: comp,
@@ -179,7 +179,7 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
         reponses: {
           set: [rid] /* disconnect, connect, set*/,
         },
-        points: score,
+        points: points,
         validation: [
           {
             competence: comp,
@@ -193,7 +193,7 @@ export const setCompletionResponse = ({ texte, type, rid, isSelected, score, com
     return updateCompletion({
       data: {
         contenu: texte,
-        points: score,
+        points: points,
         validation: [
           {
             competence: comp,

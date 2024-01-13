@@ -22,7 +22,7 @@ export const QuestionText = ({ completion, hasAnswer, question }) => {
           hasAnswer.mutate({
             texte: textareaRef.current.value,
             type: question.attributes.type,
-            score: question.attributes.score,
+            points: question.attributes.score,
             comp: question.attributes.competence.data.id,
             cid : completion.id,
             niveau: 4,

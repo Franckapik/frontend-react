@@ -26,7 +26,8 @@ export const Questions = ({ question, exid, index, setPointsExo }) => {
   const createCompletion = useMutation({
     mutationKey: ["createCompletion" + index],
     mutationFn: (data) => setCompletion(data),
-    onSuccess: () => {
+    onSuccess: (comp) => {
+      console.log(comp.data.id);
       queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });

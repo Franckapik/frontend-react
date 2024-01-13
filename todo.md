@@ -52,3 +52,15 @@ renseigner les PAP
 CHanger affichage dans les relations sur l'admin : Builder > Configure la vue > Edit Progression > Nom de l'entrée : id
 
 Profile > Dashboard > Evaluation > Exo > Questions 
+
+Il faut bien faire la différence entre progression et completion. 
+Une progression est une session avec le nom et les evaluations réalisées ainsi que les completions associées.
+
+Une completion est une relation 1 question et 1/plusieurs réponse id.
+
+Une progression à autant de completions que de questions. Les completions permettent de garder en mémoire les réponses de l'user.
+
+A chaque question répondue, une completion est mise à jour et les points sont remontés vers le parent Exo. 
+Ces points sont ensuites renvoyés à Eva qui doit enregistrer et envoyer sous la forme json le recap des points vers progression.
+
+Il doit y avoir une difference entre points note et score. 

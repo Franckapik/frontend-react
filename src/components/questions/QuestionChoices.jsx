@@ -21,7 +21,7 @@ export const QuestionChoice = ({ question, completion, hasAnswer }) => {
             type: question.attributes.type,
             rid: reponse.id,
             isSelected: isSelected,
-            score: reponse.attributes.correct ? question.attributes.score : 0,
+            points: reponse.attributes.correct ? question.attributes.score : 0,
             comp: question.attributes.competence.data.id,
             niveau: reponse.attributes.correct ? 4 : 1,
           })
