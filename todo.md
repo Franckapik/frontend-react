@@ -1,3 +1,11 @@
+Nettoyage a faire sur la completion, le nom de hasAnswer en changeCompletion, les scores, les points, la note pour que ce soit bcp plus clair. La correction doit ensuite prendre le json pour afficher les points a la question, a l'exo et enfin a l'eva.
+
+Est-ce que je garde les points dans les completions ?
+
+faire le monito avec l'affichage des points selon la même structure.
+
+mettre en place le changecompletion et le changeNote sur questionText => a tester desormais
+
 V5 react query.
 Dashboard et profil reconverti. Gros menage a faire dans fetch et post qui sapelleront query et mutate 
 rename setCOmpletion ?

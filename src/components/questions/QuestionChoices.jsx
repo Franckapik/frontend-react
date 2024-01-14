@@ -3,7 +3,7 @@ import { getProgression } from "../../api/fetch";
 import { useEvaParams } from "../../hooks/useEvaParams";
 import { setNote } from "../../api/post";
 
-export const QuestionChoice = ({ question, completion, hasAnswer, exid }) => {
+export const QuestionChoice = ({ question, completion, changeCompletion, exid }) => {
   const { correction, papier, pid } = useEvaParams();
   const queryClient = useQueryClient();
 
@@ -20,8 +20,9 @@ export const QuestionChoice = ({ question, completion, hasAnswer, exid }) => {
     },
   });
 
-  const handleNote = (points) => {
-    {
+  const handleNote = ({ points, completion }) => {
+    if (correction === null) {
+      changeCompletion.mutate(completion);
       const oldPoints = progression?.data[0]?.attributes.note;
       const newPoints = { [exid]: { ...oldPoints[exid], ...points } };
       const newNote = { ...oldPoints, ...newPoints };
@@ -31,18 +32,9 @@ export const QuestionChoice = ({ question, completion, hasAnswer, exid }) => {
         });
         return acc;
       }, 0);
-
-      changeNote.mutate({ note: newNote, points : total, pid: pid });
+      changeNote.mutate({ note: newNote, points: total, pid: pid });
     }
   };
-
-  /* this code has to be verified */
-  /*  useEffect(() => {
-    if (correction === null && progression) {
-      if(progression?.data[0]?.attributes.note.hasOwnProperty(exid))
-      setPointsExo((old) => ({ ...old, [exid]: { ...old[exid], ...progression?.data[0]?.attributes.note[exid] } }));
-    }
-  }, []); */
 
   return question.attributes.reponses.data.map((reponse, i) => {
     let isSelected = completion.attributes.reponses.data?.map((a) => a.id).includes(reponse.id);
@@ -56,7 +48,20 @@ export const QuestionChoice = ({ question, completion, hasAnswer, exid }) => {
                 isSelected ? "is-selected" : ""
               } ${correction !== null && reponse.attributes.correct ? "is-correct" : ""} `
         }
-        onClick={() => handleNote({ [question.id]: reponse.attributes.correct ? question.attributes.score : 0 })}
+        onClick={() =>
+          handleNote({
+            points: { [question.id]: reponse.attributes.correct ? question.attributes.score : 0 },
+            completion: {
+              cid: completion.id,
+              type: question.attributes.type,
+              rid: reponse.id,
+              isSelected: isSelected,
+              points: reponse.attributes.correct ? question.attributes.score : 0,
+              comp: question.attributes.competence.data.id,
+              niveau: reponse.attributes.correct ? 4 : 1,
+            },
+          })
+        }
       >
         {papier !== null
           ? correction !== null

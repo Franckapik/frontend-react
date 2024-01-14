@@ -1,15 +1,14 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { getEva, getProgression } from "../api/fetch.js";
-import { setNote, setPoints } from "../api/post.js";
+import { getEva } from "../api/fetch.js";
+import { setNote } from "../api/post.js";
 import { useEvaParams } from "../hooks/useEvaParams.js";
 import { BreadCrumbExo } from "./BreadCrumbExo.jsx";
 import { Exo } from "./Exo.jsx";
 import { Print } from "./Print.jsx";
 
 const Evaluation = () => {
-  const queryClient = useQueryClient();
-  const { pid, exo, eid, papier, correction } = useEvaParams();
+  const { exo, eid, papier } = useEvaParams();
 
   const {
     data: exercices,
@@ -22,33 +21,6 @@ const Evaluation = () => {
     enabled: !!eid,
   });
 
-
-
-  /*  const initialNote = progression?.data[0]?.attributes.note || {}
-
-  console.log(progression?.data[0]?.attributes.note);*/
-
-  const [pointsEva, setPointsEva] = useState({});
-
-  const changeNote = useMutation({
-    mutationFn: (data) => setNote(data),
-    onSuccess: (note) => {
-      console.log(note);
-      queryClient.invalidateQueries(["progression"]);
-    },
-  });
-
-  useEffect(() => {
-    if (correction === null) {
-      if (Object.keys(pointsEva).length !== 0) {
-        /*       console.log("[exid : points]" , pointsEva);
-         */
-/*         changeNote.mutate({ pid: pid, note: pointsEva });
- */      }
-    }
-  }, [pointsEva, correction]);
-
-
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
   if (isSuccess)
@@ -59,7 +31,7 @@ const Evaluation = () => {
           {exercices.data
             .filter((a, i) => (exo !== null ? i == exo : true))
             .map((exercice, i) => (
-              <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} />
+              <Exo key={"exo" + i} exercice={exercice} />
             ))}
           {exo && <BreadCrumbExo exo={exo} exoMax={exercices.data.length} />}
         </div>

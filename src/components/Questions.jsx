@@ -1,11 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
-import { getCompletionByQID, getProgression } from "../api/fetch.js";
+import React, { useEffect } from "react";
+import { DNA } from "react-loader-spinner";
+import { getCompletionByQID } from "../api/fetch.js";
 import { setCompletion, setCompletionResponse } from "../api/post.js";
 import { useEvaParams } from "../hooks/useEvaParams.js";
 import { QuestionChoice } from "./questions/QuestionChoices.jsx";
 import { QuestionText } from "./questions/QuestionText.jsx";
-import { DNA } from "react-loader-spinner";
 
 export const Questions = ({ question, exid, index, setPointsExo }) => {
   const { pid, correction, papier } = useEvaParams();
@@ -26,29 +26,21 @@ export const Questions = ({ question, exid, index, setPointsExo }) => {
     mutationKey: ["createCompletion" + index],
     mutationFn: (data) => setCompletion(data),
     onSuccess: (comp) => {
-      console.log(comp.data.id);
       queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });
 
-  /* Une question non répondue doit être enregistrée dès le début */
+  /* Create completion if not exist at the beginning */
   useEffect(() => {
     if (completion === null) {
       createCompletion.mutate({ pid: pid, qid: question.id, eid: question.attributes.exercice.data.id });
     }
   }, [isSuccess]);
 
-  
-
-  const hasAnswer = useMutation({
+  const changeCompletion = useMutation({
     mutationKey: ["setCompletionresponse" + index],
     mutationFn: (data) => setCompletionResponse(data),
-    onSuccess: (a) => {
-      /*       console.log("Exercices points:", a);
-       */
-      const newPoints = {};
-      newPoints[a.data.attributes.question.data.id] = a.data.attributes.points;
-      setPointsExo((old) => ({ ...old, [exid]: { ...old[exid], ...newPoints } }));
+    onSuccess: () => {
       queryClient.invalidateQueries(["completions" + "Exo" + exid + "Q" + index]);
     },
   });
@@ -81,11 +73,11 @@ export const Questions = ({ question, exid, index, setPointsExo }) => {
         {/* Questions input */}
         <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
           {(question.attributes.type === "choix simple" || question.attributes.type === "choix multiple") && (
-            <QuestionChoice exid={exid} question={question} completion={completion} hasAnswer={hasAnswer} />
+            <QuestionChoice exid={exid} question={question} completion={completion} changeCompletion={changeCompletion} />
           )}
 
           {question.attributes.type === "texte" && (
-            <QuestionText exid={exid} question={question} completion={completion} hasAnswer={hasAnswer} />
+            <QuestionText exid={exid} question={question} completion={completion} changeCompletion={changeCompletion} />
           )}
         </div>
       </>
