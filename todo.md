@@ -64,3 +64,17 @@ A chaque question répondue, une completion est mise à jour et les points sont 
 Ces points sont ensuites renvoyés à Eva qui doit enregistrer et envoyer sous la forme json le recap des points vers progression.
 
 Il doit y avoir une difference entre points note et score. 
+
+De quelle manière une progression appartient à une seule évaluation?
+Et si plusieurs eva étaient à faire pour une seule session? New pid ?
+
+{note : 2, exercices : {4 : { 10 : 0, 12 : 2}, 6 : { 11 : 0}}}
+
+
+setPost({
+  ...post,
+  postDetails: {
+    ...post.postDetails,
+    [event.target.name]: event.target.value,
+  },
+});

@@ -1,7 +1,49 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getProgression } from "../../api/fetch";
 import { useEvaParams } from "../../hooks/useEvaParams";
+import { setNote } from "../../api/post";
 
-export const QuestionChoice = ({ question, completion, hasAnswer }) => {
-  const { correction, papier } = useEvaParams();
+export const QuestionChoice = ({ question, completion, hasAnswer, exid }) => {
+  const { correction, papier, pid } = useEvaParams();
+  const queryClient = useQueryClient();
+
+  const { data: progression, isSuccess: isProgression } = useQuery({
+    queryKey: ["progression"],
+    queryFn: () => getProgression(pid),
+    enabled: !!pid,
+  });
+
+  const changeNote = useMutation({
+    mutationFn: (data) => setNote(data),
+    onSuccess: (note) => {
+      queryClient.invalidateQueries(["progression"]);
+    },
+  });
+
+  const handleNote = (points) => {
+    {
+      const oldPoints = progression?.data[0]?.attributes.note;
+      const newPoints = { [exid]: { ...oldPoints[exid], ...points } };
+      const newNote = { ...oldPoints, ...newPoints };
+      const total = Object.values(newNote).reduce((acc, val) => {
+        Object.values(val).forEach((e) => {
+          acc += e;
+        });
+        return acc;
+      }, 0);
+
+      changeNote.mutate({ note: newNote, points : total, pid: pid });
+    }
+  };
+
+  /* this code has to be verified */
+  /*  useEffect(() => {
+    if (correction === null && progression) {
+      if(progression?.data[0]?.attributes.note.hasOwnProperty(exid))
+      setPointsExo((old) => ({ ...old, [exid]: { ...old[exid], ...progression?.data[0]?.attributes.note[exid] } }));
+    }
+  }, []); */
+
   return question.attributes.reponses.data.map((reponse, i) => {
     let isSelected = completion.attributes.reponses.data?.map((a) => a.id).includes(reponse.id);
     return (
@@ -14,18 +56,7 @@ export const QuestionChoice = ({ question, completion, hasAnswer }) => {
                 isSelected ? "is-selected" : ""
               } ${correction !== null && reponse.attributes.correct ? "is-correct" : ""} `
         }
-        onClick={() =>
-          correction === null &&
-          hasAnswer.mutate({
-            cid: completion.id,
-            type: question.attributes.type,
-            rid: reponse.id,
-            isSelected: isSelected,
-            points: reponse.attributes.correct ? question.attributes.score : 0,
-            comp: question.attributes.competence.data.id,
-            niveau: reponse.attributes.correct ? 4 : 1,
-          })
-        }
+        onClick={() => handleNote({ [question.id]: reponse.attributes.correct ? question.attributes.score : 0 })}
       >
         {papier !== null
           ? correction !== null

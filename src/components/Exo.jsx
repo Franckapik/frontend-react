@@ -21,11 +21,13 @@ export const Exo = ({ exercice: exo, setPointsEva, setCompsEva }) => {
 
   useEffect(() => {
     if(pointsExo && correction === null) {
-      console.log("Questions points:" , pointsExo);
-      const e = Object.values(pointsExo).reduce((acc, val) => acc + val);
-      const newPoints = {};
-      newPoints[exo.id] = e;
-      setPointsEva((old) => ({ ...old, ...newPoints }));
+/*       console.log("[qid : points]:" , pointsExo);
+ */      const note = Object.values(pointsExo).reduce((acc, val) =>{ 
+        Object.values(val).forEach(e => {
+          acc += e
+        });
+        return acc}, 0);
+      setPointsEva((old) => ({ ...old, ...pointsExo, note : note }));
     }
   }, [pointsExo]);
 

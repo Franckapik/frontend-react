@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { getEva } from "../api/fetch.js";
-import { setPoints } from "../api/post.js";
+import { getEva, getProgression } from "../api/fetch.js";
+import { setNote, setPoints } from "../api/post.js";
 import { useEvaParams } from "../hooks/useEvaParams.js";
 import { BreadCrumbExo } from "./BreadCrumbExo.jsx";
 import { Exo } from "./Exo.jsx";
@@ -9,32 +9,45 @@ import { Print } from "./Print.jsx";
 
 const Evaluation = () => {
   const queryClient = useQueryClient();
-  const {pid, exo, eid, papier, correction} = useEvaParams();
+  const { pid, exo, eid, papier, correction } = useEvaParams();
 
-  const [pointsEva, setPointsEva] = useState({});
-
-  const { data: exercices, isSuccess, isLoading, error } = useQuery({
+  const {
+    data: exercices,
+    isSuccess,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ["exercices"],
     queryFn: () => getEva(eid),
     enabled: !!eid,
   });
 
 
+
+  /*  const initialNote = progression?.data[0]?.attributes.note || {}
+
+  console.log(progression?.data[0]?.attributes.note);*/
+
+  const [pointsEva, setPointsEva] = useState({});
+
   const changeNote = useMutation({
-    mutationFn: (data) => setPoints(data),
-    onSuccess: () => {
+    mutationFn: (data) => setNote(data),
+    onSuccess: (note) => {
+      console.log(note);
       queryClient.invalidateQueries(["progression"]);
     },
   });
 
   useEffect(() => {
     if (correction === null) {
-      console.log(pointsEva);
-      const note = Object.values(pointsEva).reduce((acc, val) => (acc += val), 0);
-      console.log("note totale eva", note);
-      changeNote.mutate({ pid: pid, note: note });
+      if (Object.keys(pointsEva).length !== 0) {
+        /*       console.log("[exid : points]" , pointsEva);
+         */
+/*         changeNote.mutate({ pid: pid, note: pointsEva });
+ */      }
     }
   }, [pointsEva, correction]);
+
 
   if (isLoading) return "Chargement...";
   if (error) console.log("An error occurred while fetching the user data ", error);
@@ -48,7 +61,7 @@ const Evaluation = () => {
             .map((exercice, i) => (
               <Exo key={"exo" + i} exercice={exercice} setPointsEva={setPointsEva} />
             ))}
-          {exo && <BreadCrumbExo exo={exo} exoMax={exercices.data.length}/>}
+          {exo && <BreadCrumbExo exo={exo} exoMax={exercices.data.length} />}
         </div>
       </div>
     );

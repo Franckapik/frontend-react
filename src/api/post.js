@@ -92,6 +92,26 @@ export const setPoints = ({ note, pid }) => {
     });
 };
 
+export const setNote = ({ note, points, pid }) => {
+  console.log(note, pid);
+  return axios
+    .put(`https://strapi.eva-svt.ovh/api/progressions/${pid}?populate=*`, {
+      data: {
+        note: note,
+        points : points,
+      },
+      pid: pid,
+    })
+    .then((response) => {
+      console.info("[PUT] [Update Note in Progression] [/api/progressions] on id : " + pid);
+      return response.data.data;
+    })
+    .catch((err) => {
+      console.error(err);
+      return err;
+    });
+};
+
 export const setCompletion = ({ pid, qid, eid }) => {
   return axios
     .post(`https://strapi.eva-svt.ovh/api/completions?populate=*`, {
