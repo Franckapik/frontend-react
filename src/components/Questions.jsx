@@ -59,7 +59,6 @@ export const Questions = ({ question, exid, index }) => {
               : `box has-text-weight-semibold`
           }
         >
-          {console.log(completion.attributes.points)}
           {papier !== null ? "► " : ""} Q{index} : {question.attributes.contenu} ({question.attributes.type})
           <div className="tag is-medium ">{correction !== null ? completion.attributes.points !== null ? completion.attributes.points : "x" : ""} / {question.attributes.score}</div>
           <div className="is-size-7 mr-5">

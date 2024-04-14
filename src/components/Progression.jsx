@@ -65,7 +65,7 @@ export const Progression = () => {
                 <span className="icon">
                   <i className="fa-solid fa-clock"></i>
                 </span>
-                Reprise : {progression.data[0] != null && moment(progression.data[0].attributes.reprise).format("LLLL")}
+                Reprise : {progression.data[0] != null && progression.data[0].attributes.reprise != null ? moment(progression.data[0].attributes.reprise).format("LLLL") : "Aucune"}
               </div>
             </div>
           )}

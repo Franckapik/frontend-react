@@ -1,3 +1,5 @@
+Revoir la notion de reprise d'eva et de date 
+
 La correction doit ensuite prendre le json pour afficher les points a la question, a l'exo et enfin a l'eva.
 
 Est-ce que je garde les points dans les completions ?
@@ -10,6 +12,8 @@ V5 react query.
 Dashboard et profil reconverti. Gros menage a faire dans fetch et post qui sapelleront query et mutate 
 rename setCOmpletion ?
 bien reperer dans les questions ce qui est lu en cache ou pas : stale ou  fetching lors du chagmt dexo 
+
+
 
 
 soumettre certaines question a validation
