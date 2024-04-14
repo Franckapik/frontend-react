@@ -59,8 +59,9 @@ export const Questions = ({ question, exid, index }) => {
               : `box has-text-weight-semibold`
           }
         >
+          {console.log(completion.attributes.points)}
           {papier !== null ? "► " : ""} Q{index} : {question.attributes.contenu} ({question.attributes.type})
-          {correction !== null && completion.attributes.points} / {question.attributes.score}
+          <div className="tag is-medium ">{correction !== null ? completion.attributes.points !== null ? completion.attributes.points : "x" : ""} / {question.attributes.score}</div>
           <div className="is-size-7 mr-5">
             Compétence :{" "}
             {correction !== null && completion.attributes.validation?.length
@@ -74,7 +75,12 @@ export const Questions = ({ question, exid, index }) => {
         {/* Questions input */}
         <div className={papier !== null ? `ml-5` : `is-flex is-flex-wrap-wrap`}>
           {(question.attributes.type === "choix simple" || question.attributes.type === "choix multiple") && (
-            <QuestionChoice exid={exid} question={question} completion={completion} changeCompletion={changeCompletion} />
+            <QuestionChoice
+              exid={exid}
+              question={question}
+              completion={completion}
+              changeCompletion={changeCompletion}
+            />
           )}
 
           {question.attributes.type === "texte" && (

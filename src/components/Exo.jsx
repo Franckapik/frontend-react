@@ -26,15 +26,12 @@ export const Exo = ({ exercice: exo }) => {
   });
 
   useEffect(() => {
-    if (correction !== null && progression?.data[0]?.attributes.note !== null ) {
+    if (correction !== null && progression?.data[0]?.attributes.note !== null) {
       const pointsExo = progression?.data[0]?.attributes.note[exo.id] || false;
       console.log(pointsExo);
       if (pointsExo) {
-        const noteExo = Object.values(pointsExo).reduce(
-          (acc, val) => (acc += val),
-          0
-        );
-        setNoteExo(noteExo);  
+        const noteExo = Object.values(pointsExo).reduce((acc, val) => (acc += val), 0);
+        setNoteExo(noteExo);
       }
     }
   }, [isProgression]);
@@ -46,8 +43,10 @@ export const Exo = ({ exercice: exo }) => {
       <div className="card m-3 has-background-light is-shadowless">
         <div className="card-content">
           <div className={papier !== null ? `is-underlined card-header mb-4  is-shadowless` : ` mb-2 `}>
-            Exercice {exo.attributes.numero} : {exo.attributes.titre} {correction !== null ? noteExo : ""} /{" "}
-            {exo.attributes.score}
+            Exercice {exo.attributes.numero} : {exo.attributes.titre}
+            <div className="tag is-large ">
+              {correction !== null ? (noteExo !== null ? noteExo : "x") : ""} /{exo.attributes.score}
+            </div>
           </div>
           <div className="content">
             <div>
