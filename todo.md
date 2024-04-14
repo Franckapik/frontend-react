@@ -1,4 +1,4 @@
-Nettoyage a faire sur la completion, le nom de hasAnswer en changeCompletion, les scores, les points, la note pour que ce soit bcp plus clair. La correction doit ensuite prendre le json pour afficher les points a la question, a l'exo et enfin a l'eva.
+La correction doit ensuite prendre le json pour afficher les points a la question, a l'exo et enfin a l'eva.
 
 Est-ce que je garde les points dans les completions ?
 

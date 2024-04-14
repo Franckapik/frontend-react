@@ -7,7 +7,7 @@ export const QuestionChoice = ({ question, completion, changeCompletion, exid })
   const { correction, papier, pid } = useEvaParams();
   const queryClient = useQueryClient();
 
-  const { data: progression, isSuccess: isProgression } = useQuery({
+  const { data: progression } = useQuery({
     queryKey: ["progression"],
     queryFn: () => getProgression(pid),
     enabled: !!pid,
@@ -15,7 +15,7 @@ export const QuestionChoice = ({ question, completion, changeCompletion, exid })
 
   const changeNote = useMutation({
     mutationFn: (data) => setNote(data),
-    onSuccess: (note) => {
+    onSuccess: () => {
       queryClient.invalidateQueries(["progression"]);
     },
   });
@@ -23,7 +23,7 @@ export const QuestionChoice = ({ question, completion, changeCompletion, exid })
   const handleNote = ({ points, completion }) => {
     if (correction === null) {
       changeCompletion.mutate(completion);
-      const oldPoints = progression?.data[0]?.attributes.note;
+      const oldPoints = progression?.data[0]?.attributes.note || {};
       const newPoints = { [exid]: { ...oldPoints[exid], ...points } };
       const newNote = { ...oldPoints, ...newPoints };
       const total = Object.values(newNote).reduce((acc, val) => {

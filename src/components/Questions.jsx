@@ -7,7 +7,7 @@ import { useEvaParams } from "../hooks/useEvaParams.js";
 import { QuestionChoice } from "./questions/QuestionChoices.jsx";
 import { QuestionText } from "./questions/QuestionText.jsx";
 
-export const Questions = ({ question, exid, index, setPointsExo }) => {
+export const Questions = ({ question, exid, index }) => {
   const { pid, correction, papier } = useEvaParams();
   const queryClient = useQueryClient();
 
@@ -22,6 +22,8 @@ export const Questions = ({ question, exid, index, setPointsExo }) => {
     queryFn: () => getCompletionByQID({ pid: pid, qid: question.id }),
   });
 
+  /* Create completion if not exist at the beginning */
+
   const createCompletion = useMutation({
     mutationKey: ["createCompletion" + index],
     mutationFn: (data) => setCompletion(data),
@@ -30,7 +32,6 @@ export const Questions = ({ question, exid, index, setPointsExo }) => {
     },
   });
 
-  /* Create completion if not exist at the beginning */
   useEffect(() => {
     if (completion === null) {
       createCompletion.mutate({ pid: pid, qid: question.id, eid: question.attributes.exercice.data.id });
