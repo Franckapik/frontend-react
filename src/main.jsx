@@ -10,6 +10,7 @@ import { Monitor } from "./components/Monitor";
 import './index.css';
 import Dashboard from './components/Dashboard.jsx';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Notes } from './components/Notes.jsx';
 
 const queryClient = new QueryClient()
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -21,6 +22,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/dashboard" element={<Layout ><Dashboard /></Layout>} />
         <Route path="/evaluation" element={<Layout ><Evaluation /></Layout>} />
         <Route path="/monitor" element={<Monitor />} />
+        <Route path="/notes" element={<Notes />} />
       </Routes>
       <ReactQueryDevtools initialIsOpen={false} />
     </BrowserRouter></QueryClientProvider>
