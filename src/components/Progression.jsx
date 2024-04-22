@@ -71,9 +71,9 @@ export const Progression = () => {
           )}
           <table className="table is-striped is-fullwidth position-fixed">
             <thead>
-              <tr>
+              <tr className="is-flex is-justify-content-center">
                 <th>
-                  <i className="fa-regular fa-id-badge"></i>  {avatar && <img src={avatar} />} NOM/PRENOM :{" "}
+                  <i className="fa-regular fa-id-badge"></i>  {avatar && <img src={avatar} className="avatar" />} NOM/PRENOM :{" "}
                   {papier === null && progression.data[0]?.attributes.eleve?.data != null && (
                     <div className="tag is-medium ">{progression.data[0].attributes.eleve.data.attributes.Nom} </div>
                   )}

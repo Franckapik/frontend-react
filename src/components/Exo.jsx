@@ -28,7 +28,6 @@ export const Exo = ({ exercice: exo }) => {
   useEffect(() => {
     if (correction !== null && progression?.data[0]?.attributes.note !== null) {
       const pointsExo = progression?.data[0]?.attributes.note[exo.id] || false;
-      console.log(pointsExo);
       if (pointsExo) {
         const noteExo = Object.values(pointsExo).reduce((acc, val) => (acc += val), 0);
         setNoteExo(noteExo);

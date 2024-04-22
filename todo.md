@@ -1,3 +1,10 @@
+status a creer
+Cmt faire si un eleve fait plusieurs evaluations ? 
+S'assurer que lorsque on clique sur commencer l'eva la progression enregistre bien l'évaluation id. 
+Retrouver les notes de l'évaluation dans Notes
+
+reregarder cmt est définie une progression vis a vis de la session
+--------------------------------
 Revoir la notion de reprise d'eva et de date 
 
 La correction doit ensuite prendre le json pour afficher les points a la question, a l'exo et enfin a l'eva.

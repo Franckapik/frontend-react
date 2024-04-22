@@ -67,6 +67,20 @@ a {
 
 }
 
+.avatar {
+  position: fixed;
+  top: 10px;
+  left: 20px;
+  background-color:white ;
+  border : solid 1px black;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  width: 80px;
+}
+
 .button {
   white-space: normal;
 }
