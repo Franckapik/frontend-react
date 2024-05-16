@@ -11,19 +11,43 @@ export const Notes = () => {
   const queryClient = useQueryClient();
   const [cid, setClasseId] = useState();
 
-  const DisplayNote = ({ eid }) => {
+  const DisplayNote = ({ uid }) => {
     const {
       isSuccess,
       data: progression,
       isLoading,
       error,
     } = useQuery({
-      queryKey: ["progression" + eid],
-      queryFn: () => getProgressionByEleve(eid),
-      enabled: !!eid,
+      queryKey: ["progression" + uid],
+      queryFn: () => getProgressionByEleve(uid),
+      enabled: !!uid,
     });
 
-    return <div></div>;
+    return (
+      <div>
+        {isSuccess ? (
+          <div
+            className={
+              Number.isInteger(progression.data[0]?.attributes?.points)
+                ? progression.data[0]?.attributes?.points > 8
+                  ? progression.data[0]?.attributes?.points > 12
+                    ? "is-success tag is-medium"
+                    : "tag is-medium is-warning"
+                  : "tag is-medium is-danger"
+                : "tag is-medium is-info"
+            }
+          >
+            {progression.data[0]
+              ? progression.data[0]?.attributes?.points !== null
+                ? `${progression.data[0]?.attributes?.points} pts`
+                : "?"
+              : "𐄂"}
+          </div>
+        ) : (
+          "rien"
+        )}
+      </div>
+    );
   };
 
   const {
@@ -49,35 +73,41 @@ export const Notes = () => {
 
   return (
     <div>
-           { isSuccessClasse &&    <select
-            name="classes"
-            id="classes-select"
-            className="select is-large m-5 w300"
-            onChange={(e) => setClasseId(e.target.value)}
-            defaultValue={-1}
-          >
-            <option key={"default select"} value="-1" disabled="disabled">
-              -- Classes --
-            </option>
+      {isSuccessClasse && (
+        <select
+          name="classes"
+          id="classes-select"
+          className="select is-large m-5 w300"
+          onChange={(e) => setClasseId(e.target.value)}
+          defaultValue={-1}
+        >
+          <option key={"default select"} value="-1" disabled="disabled">
+            -- Classes --
+          </option>
 
-            {classes?.data.map((classe) => (
-              <option key={"classe" + classe.id} value={classe.id}>
-                {classe.attributes.Classe}
-              </option>
-            ))}
-          </select>}
+          {classes?.data.map((classe) => (
+            <option key={"classe" + classe.id} value={classe.id}>
+              {classe.attributes.Classe}
+            </option>
+          ))}
+        </select>
+      )}
       {cid && (
         <div>
           <table className="table">
-            {isSuccessClasse && classes?.data
+            {isSuccessClasse &&
+              classes?.data
                 .filter((a) => a.id == cid)[0]
                 .attributes.eleve.data.map((eleve) => (
                   <tr className="row" key={"eleve" + eleve.id} value={eleve.id}>
-                    <td>{eleve.id}</td>
+                    <td className="tag">{eleve.id}</td>
                     <td>{eleve.attributes.Nom}</td>
                     <td>{eleve.attributes.Sexe}</td>
                     <td>{eleve.attributes.Naissance}</td>
-                    {/*   <td><DisplayNote eid={eleve.id} /></td> */}
+                    <td>
+                      <DisplayNote uid={eleve.id} />
+                    </td>
+                    {/*   <td><DisplayNote uid={eleve.id} /></td> */}
                   </tr>
                 ))}
           </table>
