@@ -8,8 +8,8 @@ export const getProgression = (pid) =>
 export const getProgressionByClasse = (cid) =>
   fetch(`https://strapi.eva-svt.ovh/api/progressions?populate=*&filters[classe]=${cid}`).then((res) => res.json());
 
-export const getProgressionByEleve = (eid) =>
-  fetch(`https://strapi.eva-svt.ovh/api/progressions?populate=*&filters[eleve]=${eid}`).then((res) => res.json());
+export const getProgressionByEleve = (uid, eid) =>
+  fetch(`https://strapi.eva-svt.ovh/api/progressions?populate=*&filters[eleve]=${uid}&filters[evaluation]=${eid}`).then((res) => res.json());
 
 export const getEvaluations = (cid) =>
   fetch(`https://strapi.eva-svt.ovh/api/evaluations?populate=*&filters[classes]=${cid}`).then((res) => res.json());
