@@ -1,7 +1,6 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import { getEva } from "../api/fetch.js";
-import { setNote } from "../api/post.js";
 import { useEvaParams } from "../hooks/useEvaParams.js";
 import { BreadCrumbExo } from "./BreadCrumbExo.jsx";
 import { Exo } from "./Exo.jsx";

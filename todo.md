@@ -1,4 +1,8 @@
-Revoir la notion de reprise d'eva et de date 
+Statut de l'éva passe a complété et capacité de voir sa note sans la correction accessible encore.
+
+Mettre en places "validationS" dans prgression avec un setValidation (pour les 6emes)
+
+Revoir la notion de reprise d'eva et de date . Remise a zero (null) si je reviens sur une eva hors session.
 
 La correction doit ensuite prendre le json pour afficher les points a la question, a l'exo et enfin a l'eva.
 
